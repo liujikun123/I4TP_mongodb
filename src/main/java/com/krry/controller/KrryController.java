@@ -1,18 +1,26 @@
 package com.krry.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.krry.entity.material_type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.krry.dao.IUserDao;
 import com.krry.entity.Part;
 import com.krry.util.TmStringUtils;
+
+
+
+
+
+
 
 /**
  * Controller层，作为请求转发
@@ -24,12 +32,13 @@ public class KrryController {
 
 	@Autowired
 	private IUserDao userDao;
-	
+
+
 	/**
 	 * 进入首页
 	 * @return
 	 */
-	@RequestMapping("/index")
+	@RequestMapping(value="/index")
 	public String index(){
 
 		return "index/index";   //默认是转发，不会显示转发路径
@@ -47,7 +56,11 @@ public class KrryController {
      */
     @RequestMapping(value="/gotoPartCreat")
     public String gotoPartCreat(HttpServletRequest request){
-       return "index/partCreat";
+//载入材料种类
+            List<material_type> type = userDao.get_material_type();
+            request.getSession().setAttribute("material_type", type);
+
+        return "index/partCreat";
     }
     /**
      * 创建新零件
@@ -64,38 +77,66 @@ public class KrryController {
 
         //获取用户和密码
         String partName = request.getParameter("partName");
-        String part_x = request.getParameter("part_x");
-        String part_y = request.getParameter("part_y");
-        String part_z = request.getParameter("part_z");
-
+        double part_x = Double.parseDouble(request.getParameter("part_x"));
+        double part_y = Double.parseDouble(request.getParameter("part_y"));
+        double part_z = Double.parseDouble(request.getParameter("part_z"));
+        String material = request.getParameter("material_type");
+        double workpiece_weight_kg = Double.parseDouble(request.getParameter("workpiece_weight_kg"));
+        Boolean multiaspect = Boolean.parseBoolean(request.getParameter("multiaspect"));
+        Boolean rotation = Boolean.parseBoolean(request.getParameter("rotation"));
         //如果邮箱和密码为null,那么就返回已null标识
         if(TmStringUtils.isEmpty(partName) )return "index/allError";
-        if(TmStringUtils.isEmail(part_x))return "index/allError";
-        if(TmStringUtils.isEmpty(part_y) )return "index/allError";
-        if(TmStringUtils.isEmail(part_z))return "index/allError";
-
-        //根据昵称查询，用户是否存在
-        Part part = userDao.findByUsername(partName);
-
-        //若存在
-        if(part != null){ //昵称重复
-            return "index/allError";
-        }
-
-        //格式化时间类型
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String nowTime = sdf.format(new Date());
+//
 
         //执行到这里，说明可以注册
-        Part newPart = new Part(partName, part_x, part_y, part_z);
+        Part newPart = new Part(partName, part_x, part_y, part_z,material,workpiece_weight_kg,multiaspect,rotation);
         //调用注册方法
         userDao.saveOrUpdateUser(newPart);
-
         //将信息设置session作用域
-        request.getSession().setAttribute("part", newPart);
-
+        request.getSession().setAttribute("productId", newPart.getId());
+        System.out.println(newPart.getId().length());
         return "index/success";
     }
+
+
+    /**
+     * 前往选择零件页面
+     * com.krry.controller.gotoPartSelect
+     * 方法名：gotoPartCreat
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(value="/gotoPartSelect")
+    public String gotoPartSelect(HttpServletRequest request){
+//载入所有零件
+        List<Part> type = userDao.get_allParts();
+        request.getSession().setAttribute("allPart", type);
+        return "index/partSelect";
+    }
+
+    /**
+     * 选择已有零件
+     * com.krry.controller.partSelect
+     * 方法名：partSelect
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.POST,value="/partSelect")
+    public String partSelect(HttpServletRequest request){
+
+        String product = request.getParameter("production");
+        request.getSession().setAttribute("productId", product.substring(3, 27));
+        System.out.println(product.substring(3, 27).length());
+        return "index/success";
+    }
+
+}
 //	/**
 //	 * 进入登录界面
 //	 * @return
@@ -222,7 +263,5 @@ public class KrryController {
 //		return "redirect:index";
 //	}
 //
-}
-
 
 

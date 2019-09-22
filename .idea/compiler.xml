@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="7">
-      <module name="krry_mongodb" target="7" />
+      <module name="krry_mongodb" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

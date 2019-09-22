@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.krry.entity.Part;
 import com.krry.entity.User;
+import com.krry.entity.material_type;
 
 /**
  * 
@@ -13,7 +14,7 @@ public interface IUserDao {
 	
     /**
      * 添加
-     * @param User
+     * @param Part
      */
     public void addUser(Part Part);
 
@@ -27,7 +28,7 @@ public interface IUserDao {
 
     /**
      * 保存或修改
-     * @param User
+     * @param Part
      */
     public void saveOrUpdateUser(Part Part);
 
@@ -52,7 +53,10 @@ public interface IUserDao {
      * @return
      */
     public List<Part> findAll();
-    
-    
+
+    public List<material_type> get_material_type();
+
+    public List<Part> get_allParts();
+
 }
 
