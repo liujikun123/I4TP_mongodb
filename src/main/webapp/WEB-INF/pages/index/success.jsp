@@ -17,7 +17,7 @@
 </head>
 <body>
 <h3>创建/选择成功</h3>
-<P>id = ${sessionScope.productId}<br></P>
+<P>id = ${sessionScope}<br></P>
 
 <a href="${basePath}/index/index">返回首页</a>
 

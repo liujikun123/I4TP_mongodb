@@ -93,8 +93,10 @@ public class KrryController {
         userDao.saveOrUpdateUser(newPart);
         //将信息设置session作用域
         request.getSession().setAttribute("productId", newPart.getId());
-        System.out.println(newPart.getId().length());
-        return "index/success";
+       // System.out.println(newPart.getId().length());
+        String process = newPart.getProcess();
+        request.getSession().setAttribute("process",process );
+        return "index/process";
     }
 
 
@@ -130,11 +132,30 @@ public class KrryController {
     public String partSelect(HttpServletRequest request){
 
         String product = request.getParameter("production");
-        request.getSession().setAttribute("productId", product.substring(3, 27));
-        System.out.println(product.substring(3, 27).length());
-        return "index/success";
+        String productId = product.substring(3, 27);
+        request.getSession().setAttribute("productId",productId );
+     //   System.out.println(product.substring(3, 27).length());
+        String process = userDao.findById(productId).getProcess();
+
+        request.getSession().setAttribute("process",process );
+        return "index/process";
     }
 
+    /**
+     * 选择工艺
+     * com.krry.controller.processSelect
+     * 方法名：processSelect
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.POST,value="/processSelect")
+    public String processSelect(HttpServletRequest request){
+
+        return "index/success";
+    }
 }
 //	/**
 //	 * 进入登录界面

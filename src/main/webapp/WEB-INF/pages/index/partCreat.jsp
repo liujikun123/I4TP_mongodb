@@ -16,16 +16,6 @@
     <meta charset="utf-8">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <title>添加产品</title>
-<%--    <script type="text/javascript">--%>
-<%--        $(document).ready(function() {--%>
-<%--            $("#btn").click(function () {--%>
-<%--                alert("Succeed2");--%>
-<%--                $("#cid").text("Succeed");--%>
-<%--            })--%>
-<%--    };)--%>
-<%--    </script>--%>
-            
-        
 </head>
 
 
