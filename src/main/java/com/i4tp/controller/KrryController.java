@@ -1,20 +1,19 @@
-package com.krry.controller;
+package com.i4tp.controller;
 
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.krry.entity.material_type;
+import com.i4tp.entity.material_type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.krry.dao.IUserDao;
-import com.krry.entity.Part;
-import com.krry.util.TmStringUtils;
+import com.i4tp.dao.IUserDao;
+import com.i4tp.entity.Part;
+import com.i4tp.util.TmStringUtils;
 
 
 

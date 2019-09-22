@@ -1,14 +1,14 @@
-package com.krry.dao.impl;
+package com.i4tp.dao.impl;
 
-import com.krry.entity.material_type;
+import com.i4tp.entity.material_type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
-import com.krry.dao.IUserDao;
-import com.krry.entity.Part;
+import com.i4tp.dao.IUserDao;
+import com.i4tp.entity.Part;
 
 import java.util.List;
 

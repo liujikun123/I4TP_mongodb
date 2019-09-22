@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="com.krry.entity.material_type" %>
+<%@ page import="com.i4tp.entity.material_type" %>
 <%@include file="../common/common.jsp" %>
 
 <!DOCTYPE HTML>

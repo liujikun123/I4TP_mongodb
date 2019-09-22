@@ -6,8 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
-<%@ page import="com.krry.entity.material_type" %>
-<%@ page import="com.krry.entity.Part" %>
+<%@ page import="com.i4tp.entity.material_type" %>
+<%@ page import="com.i4tp.entity.Part" %>
 <%@include file="../common/common.jsp" %>
 <html>
 <head>
@@ -35,7 +35,7 @@
         %>
     </select><br>
 
-    <input type="submit" value="下一步" onclick="selectProduct()" > <br>
+    <input type="submit" value="下一步"  > <br>
 </form>
 <p>产品信息</p>
 <pre id="p_inf"> </pre>

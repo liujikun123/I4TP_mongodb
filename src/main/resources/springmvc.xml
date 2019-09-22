@@ -16,7 +16,7 @@
       ">
 		
    	  <!-- 扫包 -->
-   	  <context:component-scan base-package="com.krry.controller"></context:component-scan>
+   	  <context:component-scan base-package="com.i4tp.controller"></context:component-scan>
    	  
    	  
    	  <!--以下映射器和适配器的配置可以通过注解驱动来代替  -->
@@ -36,7 +36,7 @@
 	   		<!-- 这个是设置不会进入拦截器的路径 -->
 	   		<mvc:exclude-mapping path="/resource/**"/>
 			<!-- 拦截器进入的类，返回false表示不会进入输入的路径 -->
-		    <bean class="com.krry.core.LoginInterceptor" /> 
+		    <bean class="com.i4tp.core.LoginInterceptor" />
   		</mvc:interceptor>
       </mvc:interceptors>
    		

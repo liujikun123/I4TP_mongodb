@@ -1,4 +1,4 @@
-package com.krry.util;
+package com.i4tp.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

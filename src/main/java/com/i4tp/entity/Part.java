@@ -1,7 +1,5 @@
-package com.krry.entity;
+package com.i4tp.entity;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.apache.taglibs.standard.lang.jstl.BooleanLiteral;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

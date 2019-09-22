@@ -1,4 +1,4 @@
-package com.krry.core;
+package com.i4tp.core;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.krry.entity.User;
+import com.i4tp.entity.User;
 
 /**
  * 登陆拦截器

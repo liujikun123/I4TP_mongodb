@@ -1,10 +1,9 @@
-package com.krry.dao;
+package com.i4tp.dao;
 
 import java.util.List;
 
-import com.krry.entity.Part;
-import com.krry.entity.User;
-import com.krry.entity.material_type;
+import com.i4tp.entity.Part;
+import com.i4tp.entity.material_type;
 
 /**
  * 
