@@ -8,11 +8,7 @@
 <script type="text/javascript">
 
     window.onload=function(){
-        var isProcess = <%=request.getSession().getAttribute("allPart")%>;
-        if( isProcess === "" ){
-        }
 
-        alert(<%=request.getAttribute("processInt")%>);
     }
 
 </script>
@@ -27,11 +23,8 @@
 
 <body>
 <input type="hidden" id="info" value=0>
-<p>当前工艺：</p><br>
-<pre id="p_inf">无 </pre><br>
-<form action="${basePath}/index/processSelect" method="post">
     选择已有工艺：
-    <select id="processSelect" name="processSelect"  onchange="myFunction()">
+    <select id="processSelect" name="processSelect"  onchange="processExist()">
         <option value=NULL> ---请选择工艺--- </option>
 <%--        <%--%>
 <%--            List<processType> ls = (List<processType>)request.getSession().getAttribute("allProcess");--%>
@@ -44,6 +37,8 @@
 <%--        %>--%>
     </select><br>
     <input type="button" value="新增工艺" onclick="createRow()">
+    <p>工艺名称
+    <input type="text" value=""></p><br>
     <table id="editTable" border="1" width="800">
         <tr>
             <th>特征编号</th>
@@ -53,12 +48,17 @@
         <tbody id="tbody">
         </tbody>
     </table>
-    <input type="button" value="保存并应用工艺" onclick="save()">
+    <input type="button" value="保存并应用工艺" onclick="processCreat()">
+
+<p>当前工艺：</p><br>
+
+<form action="${basePath}/index/processSelect" method="post">
+    <pre id="p_inf" name="p_inf">无 </pre><br>
+
     <input type="submit" value="下一步"  > <br>
 </form>
-
 </body>
-
+<%--增加一行工艺--%>
 <script type="text/javascript" >
 function createRow(){
     document.getElementById('info').value
@@ -77,5 +77,22 @@ tr.appendChild(td3);
 editTable.appendChild(tr);
 }
 </script>
+<%--将选择工艺显示--%>
+<script type="text/javascript" >
+    function myFunction() {
+        var oOpt = document.getElementById('processSelect').value;
+        $("#p_inf").text(oOpt);
+
+    }
+</script>
+<%--将新建工艺显示--%>
+<script type="text/javascript" >
+    function myFunction() {
+        var oOpt = document.getElementById('processCreat').value;
+        $("#p_inf").text(oOpt);
+
+    }
+</script>
+
 </html>
 

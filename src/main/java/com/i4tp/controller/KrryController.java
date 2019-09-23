@@ -3,16 +3,17 @@ package com.i4tp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.i4tp.entity.material_type;
+import com.i4tp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.i4tp.dao.IUserDao;
-import com.i4tp.entity.Part;
 import com.i4tp.util.TmStringUtils;
 
 
@@ -59,6 +60,9 @@ public class KrryController {
             List<material_type> type = userDao.get_material_type();
             request.getSession().setAttribute("material_type", type);
 
+
+
+
         return "index/partCreat";
     }
     /**
@@ -79,16 +83,16 @@ public class KrryController {
         double part_x = Double.parseDouble(request.getParameter("part_x"));
         double part_y = Double.parseDouble(request.getParameter("part_y"));
         double part_z = Double.parseDouble(request.getParameter("part_z"));
+        workpiece_dimensions part_dimensions = new workpiece_dimensions(part_x,part_y,part_z);
         String material = request.getParameter("material_type");
         double workpiece_weight_kg = Double.parseDouble(request.getParameter("workpiece_weight_kg"));
         Boolean multiaspect = Boolean.parseBoolean(request.getParameter("multiaspect"));
         Boolean rotation = Boolean.parseBoolean(request.getParameter("rotation"));
         //如果邮箱和密码为null,那么就返回已null标识
         if(TmStringUtils.isEmpty(partName) )return "index/allError";
-//
 
         //执行到这里，说明可以注册
-        Part newPart = new Part(partName, part_x, part_y, part_z,material,workpiece_weight_kg,multiaspect,rotation);
+        Part newPart = new Part(partName, part_dimensions,material,workpiece_weight_kg,multiaspect,rotation);
         //调用注册方法
         userDao.saveOrUpdateUser(newPart);
         //将信息设置session作用域
@@ -142,7 +146,7 @@ public class KrryController {
     }
 
     /**
-     * 选择工艺
+     * 选择工艺,读取所有机床信息，得到其中所有的操作系统
      * com.krry.controller.processSelect
      * 方法名：processSelect
      * @author kunkun
@@ -153,6 +157,33 @@ public class KrryController {
      */
     @RequestMapping(method=RequestMethod.POST,value="/processSelect")
     public String processSelect(HttpServletRequest request){
+
+        String processSelect = request.getParameter("p_inf");
+        request.getSession().removeAttribute("allPart");
+        request.getSession().setAttribute("processSelect",processSelect );
+
+        List<String> allOperatingSystem = new ArrayList();;
+        List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
+        for(int i = 0; i < manufacturing.size(); i++){
+            String operatingSystem = manufacturing.get(i).getOperating_system();
+            allOperatingSystem.add(i,operatingSystem);
+        }
+        request.getSession().setAttribute("allOperatingSystem",allOperatingSystem );
+        return "index/operatingSystemSelect";
+    }
+
+    /**
+     * 选择操作系统
+     * com.krry.controller.operatingSystem
+     * 方法名：operatingSystem
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.POST,value="/operatingSystem")
+    public String operatingSystem(HttpServletRequest request){
 
         return "index/success";
     }

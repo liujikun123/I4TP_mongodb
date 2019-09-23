@@ -23,24 +23,21 @@ public class Part {
 
     @Field("product_name")
     private String partName;
-        private  double workpiece_dimensions_x;
-        private  double workpiece_dimensions_y;
-        private  double workpiece_dimensions_z;
+    private workpiece_dimensions workpiece_dimensions;
     private String material_type;
     private double workpiece_weight_kg;
     private Boolean multiaspect;
     private Boolean rotation;
     private String process;
 
-    public Part(String partName,  double workpiece_dimensions_x, double workpiece_dimensions_y, double workpiece_dimensions_z,String material_type, double workpiece_weight_kg, Boolean multiaspect, Boolean rotation) {
+    public Part(String partName, com.i4tp.entity.workpiece_dimensions workpiece_dimensions, String material_type, double workpiece_weight_kg, Boolean multiaspect, Boolean rotation) {
+
         this.partName = partName;
-        this.workpiece_dimensions_x = workpiece_dimensions_x;
-        this.workpiece_dimensions_y = workpiece_dimensions_y;
-        this.workpiece_dimensions_z = workpiece_dimensions_z;
+        this.workpiece_dimensions = workpiece_dimensions;
         this.material_type = material_type;
         this.workpiece_weight_kg = workpiece_weight_kg;
         this.multiaspect = multiaspect;
-        this.rotation = rotation;;
+        this.rotation = rotation;
     }
 
     public String getId() {
@@ -63,28 +60,12 @@ public class Part {
         return material_type;
     }
 
-    public double getX() {
-        return workpiece_dimensions_x;
+    public com.i4tp.entity.workpiece_dimensions getWorkpiece_dimensions() {
+        return workpiece_dimensions;
     }
 
-    public void setX(double x) {
-        this.workpiece_dimensions_x = x;
-    }
-
-    public double getY() {
-        return workpiece_dimensions_y;
-    }
-
-    public void setY(double y) {
-        this.workpiece_dimensions_y = y;
-    }
-
-    public double getZ() {
-        return workpiece_dimensions_z;
-    }
-
-    public void setZ(double z) {
-        this.workpiece_dimensions_z = z;
+    public void setWorkpiece_dimensions(com.i4tp.entity.workpiece_dimensions workpiece_dimensions) {
+        this.workpiece_dimensions = workpiece_dimensions;
     }
 
     public void setMaterial(String material) {
@@ -123,14 +104,13 @@ public class Part {
         this.process = process;
     }
 
+
     @Override
     public String toString() {
         return
                 "id=" + id + '\n' +
                 "partName=" + partName + '\n' +
-                "workpiece_dimensions_x=" + workpiece_dimensions_x + '\n'+
-                "workpiece_dimensions_y=" + workpiece_dimensions_y + '\n'+
-                "workpiece_dimensions_z=" + workpiece_dimensions_z +'\n'+
+                "workpiece_dimensions_x=" + workpiece_dimensions + '\n'+
                 "material=" + material_type + '\n' +
                 "workpiece_weight_kg=" + workpiece_weight_kg +'\n'+
                 "multiaspect=" + multiaspect +'\n'+

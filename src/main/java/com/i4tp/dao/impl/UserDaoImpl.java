@@ -1,5 +1,6 @@
 package com.i4tp.dao.impl;
 
+import com.i4tp.entity.manufacturing_cell;
 import com.i4tp.entity.material_type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -44,6 +45,13 @@ public class UserDaoImpl implements IUserDao {
         mongoTemplate.save(Part,"products");
     }
 
+    public void saveManufacturingCell(manufacturing_cell mc){
+
+        mongoTemplate.save(mc,"manufacturing_cell");
+        System.out.println("执行了。。。");
+
+    }
+
     public Part findById(String id) {
     	
         return mongoTemplate.findById(id, Part.class);
@@ -67,6 +75,8 @@ public class UserDaoImpl implements IUserDao {
     public List<Part> get_allParts() {
         return mongoTemplate.findAll(Part.class);
     }
+
+    public List<manufacturing_cell> get_alleManufacturingCell(){return mongoTemplate.findAll(manufacturing_cell.class);}
 }
 
 

@@ -3,6 +3,7 @@ package com.i4tp.dao;
 import java.util.List;
 
 import com.i4tp.entity.Part;
+import com.i4tp.entity.manufacturing_cell;
 import com.i4tp.entity.material_type;
 
 /**
@@ -56,6 +57,8 @@ public interface IUserDao {
     public List<material_type> get_material_type();
 
     public List<Part> get_allParts();
+
+    public List<manufacturing_cell> get_alleManufacturingCell();
 
 }
 
