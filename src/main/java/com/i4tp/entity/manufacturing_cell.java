@@ -64,6 +64,32 @@ public class manufacturing_cell {
         this.data_protocol = data_protocol;
     }
 
+    public manufacturing_cell(String name, String device_model, String operating_system, String manufacturer, List<String> process_type, com.i4tp.entity.workspace_mm workspace_mm, com.i4tp.entity.max_dimensions_of_workpiece_mm max_dimensions_of_workpiece_mm, Double ability_of_multiaspect, Double ability_of_processing_unrotated_part, double durable_weight_kg, double max_rotated_speed_rpm, double max_feed_speed_mm_min, double max_holding_torque_N_m, double best_surface_roughness_um, double best_surface_accuracy_mm, double best_storage_capacity, List<String> spindle_interface, List<String> bus_interface, List<String> data_protocol) {
+        this.name = name;
+        this.device_model = device_model;
+        this.operating_system = operating_system;
+        this.manufacturer = manufacturer;
+        this.process_type = process_type;
+        this.workspace_mm = workspace_mm;
+        this.max_dimensions_of_workpiece_mm = max_dimensions_of_workpiece_mm;
+
+        if(ability_of_multiaspect == 0) this.ability_of_multiaspect = false;
+        else this.ability_of_multiaspect = true;
+
+        if(ability_of_processing_unrotated_part == 0) this.ability_of_processing_unrotated_part = false;
+        else this.ability_of_processing_unrotated_part = true;
+
+        this.durable_weight_kg = durable_weight_kg;
+        this.max_rotated_speed_rpm = max_rotated_speed_rpm;
+        this.max_feed_speed_mm_min = max_feed_speed_mm_min;
+        this.max_holding_torque_N_m = max_holding_torque_N_m;
+        this.best_surface_roughness_um = best_surface_roughness_um;
+        this.best_surface_accuracy_mm = best_surface_accuracy_mm;
+        this.best_storage_capacity = best_storage_capacity;
+        this.spindle_interface = spindle_interface;
+        this.bus_interface = bus_interface;
+        this.data_protocol = data_protocol;
+    }
     public com.i4tp.entity.workspace_mm getWorkspace_mm() {
         return workspace_mm;
     }
