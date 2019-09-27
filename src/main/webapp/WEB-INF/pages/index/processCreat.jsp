@@ -72,6 +72,7 @@
             white-space: nowrap;
             width: 190px;
         }
+
     </style>
 </head>
 <body>
@@ -130,35 +131,27 @@
 </div>
 
 <div id="bd" style="height: 350px;width: 800px"><br>
-    <div class="processType">选择已有工艺</div>
+    <div class="processType2"><a href="${basePath}/index/processSelect2" style="display: block" >选择已有工艺</a></div>
 
-    <div class="processType2" style="position: relative;left: 220px;bottom: 28px;"><a href="${basePath}/index/processCreat" style="display: block" >创建新工艺</a> </div>
-
-    <select id="processSelect" name="processSelect"  onchange="processExist()" style="height:38px; width: 330px ">
-        <option value="null"> ---请选择工艺--- </option>
-        <%--        <%--%>
-        <%--            List<processType> ls = (List<processType>)request.getSession().getAttribute("allProcess");--%>
-        <%--            for (processType typeVo : ls) {%>--%>
-        <%--        <option value="<%=typeVo%>"> <%=typeVo.getPartName() %> </option>--%>
-        <%--        <%--%>
-        <%--            }--%>
-        <%--        %>--%>
-    </select><br>
-
-    <div style="position: relative; top: 200px">
+    <div class="processType" style="position: relative;left: 220px;bottom: 28px;">创建新工艺</div>
+    <br>
+        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=createRow() >
+            <span>+  新增工艺步骤</span></button></div>
+    <div>
+    <img src="" alt="这是产品特征示意图" style="border: solid;width: 150px;height: 150px">
+    </div>
+    <div>
         <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
             <span>下一步</span></button></div>
     </div>
-
-    <div style="position: relative;left: 430px; bottom: 150px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89" >
+    <div style="position: relative;left: 430px; bottom: 350px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89" >
         <div style="padding:5px 10px 20px;">
             <p style="font-size:150%;text-align:center;">工艺信息</p>
             <form id="process"  action="${basePath}/index/processSelect" method="post">
-            <pre id="" name=""> </pre>
+                <pre id="" name=""> </pre>
             </form>
         </div>
     </div>
-
 </div>
 
 <script type="text/javascript" >
@@ -166,15 +159,6 @@
 
 </body>
 </html>
-
-<%--将选择工艺显示--%>
-<script type="text/javascript" >
-    function myFunction() {
-        var oOpt = document.getElementById('processSelect').value;
-        $("#p_inf").text(oOpt);
-
-    }
-</script>
 
 <%--提交--%>
 <script type="text/javascript" >
@@ -186,5 +170,11 @@
     }
 
 </script>
-</html>
+<%--将新建工艺显示--%>
+<script type="text/javascript" >
+    function myFunction() {
+        var oOpt = document.getElementById('processCreat').value;
+        $("#p_inf").text(oOpt);
 
+    }
+</script>

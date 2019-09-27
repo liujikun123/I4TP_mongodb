@@ -47,7 +47,7 @@
 
         <div class="mod-set-nav">
             <ul class="clearfix li-5">
-                <li>
+                <li >
                     <a>
                         <i class="ico ico-1"></i>
                         <span>产品选择</span>
@@ -65,13 +65,13 @@
                         <span>操作系统选择</span>
                     </a>
                 </li>
-                <li>
+                <li class="active">
                     <a>
                         <i class="ico ico-4"></i>
                         <span>MES选择</span>
                     </a>
                 </li>
-                <li  class="active">
+                <li>
                     <a>
                         <i class="ico ico-5"></i>
                         <span>确认生成</span>
@@ -86,21 +86,29 @@
 <div id="bd" style="height: 350px;width: 800px">
     <br>
 
-    <form id="success" action="${basePath}/index/index"><P>id = ${sessionScope}<br></P></form>
+    <form action="${basePath}/index/otherRequest" method="post" id="mesSelect">
+        <div style="zoom: 150%">MES系统选择：</div> <br>
+        <%
 
-    <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
-        <span>返回首页</span></button></div>
+            List<String> ls = (List<String>)request.getSession().getAttribute("allControlCell");
+
+            for (String typeVo : ls) {%>
+
+        <input type="checkbox" name=<%=typeVo %> value=<%=typeVo %>><%=typeVo %><br>
+        <%
+
+
+            }
+        %>
+        </select><br>
+
+        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
+            <span>下一步</span></button></div>
+
+    </form>
 
 
 </div>
-
-<script type="text/javascript" >
-</script>
-
-</body>
-</html>
-
-
 
 <%--提交--%>
 <script type="text/javascript" >
@@ -108,6 +116,10 @@
         if(0)
             alert("error!");
         else
-            document.getElementById("success").submit();
+            document.getElementById("mesSelect").submit();
     }
 </script>
+
+
+</body>
+</html>

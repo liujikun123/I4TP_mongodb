@@ -30,6 +30,9 @@ public class Part {
     private Boolean rotation;
     private String process;
 
+    public Part() {
+    }
+
     public Part(String partName, com.i4tp.entity.workpiece_dimensions workpiece_dimensions, String material_type, double workpiece_weight_kg, Boolean multiaspect, Boolean rotation) {
 
         this.partName = partName;

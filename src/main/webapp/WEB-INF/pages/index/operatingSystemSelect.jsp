@@ -1,39 +1,125 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kunkun
-  Date: 2019/9/22
-  Time: 12:16
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ page import="com.i4tp.entity.material_type" %>
 <%@ page import="com.i4tp.entity.Part" %>
 <%@include file="../common/common.jsp" %>
-<html>
-<head>
-    <base href="<%=basePath%>">
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="zh"><!--<![endif]--><head>
+    <meta http-equiv="X-UA-Compatible" content="edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="renderer" content="webkit">
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <title>选择操作系统</title>
+    <style>
+        body {
+            filter: none;
+        }
+    </style>
+    <title>选择产品</title>
+
+    <%
+        String cssPath = request.getContextPath();
+        String cssBasePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+    %>
+    <meta name="viewport" content="width=1200">
+    <link href="<%=cssPath%>/files/bc.css" rel="stylesheet">
+    <link href="<%=cssPath%>/files/wifi.css" rel="stylesheet">
+
+    <style type="text/css">
+
+    </style>
 </head>
 <body>
-<form action="${basePath}/index/operatingSystem" method="post">
-    操作系统选择：<br>
+
+<div id="hd">
+    <div class="inner">
+        <div class="mod-head clearfix">
+            <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
+            <div id="nav">
+                <ul>
+                    <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+                </ul>
+
+            </div>
+            <div id="userbar">
+                <span id="sysmenu" class="name s-dropdown">AMTC LOGO</span>
+            </div>
+        </div>
+
+        <div class="mod-set-nav">
+            <ul class="clearfix li-5">
+                <li>
+                    <a>
+                        <i class="ico ico-1"></i>
+                        <span>产品选择</span>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="ico ico-2"></i>
+                        <span>工艺设定</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a>
+                        <i class="ico ico-3"></i>
+                        <span>操作系统选择</span>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="ico ico-4"></i>
+                        <span>MES选择</span>
+                    </a>
+                </li>
+                <li>
+                    <a>
+                        <i class="ico ico-5"></i>
+                        <span>确认生成</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<div id="bd" style="height: 350px;width: 800px">
+    <br>
+
+    <form action="${basePath}/index/operatingSystem" method="post" id="systemSelect">
+       <div style="zoom: 150%">操作系统选择：(必须选，否则有BUG)</div> <br>
         <%
 
             List<String> ls = (List<String>)request.getSession().getAttribute("allOperatingSystem");
 
             for (String typeVo : ls) {%>
 
-    <input type="checkbox" name=<%=typeVo %> value=<%=typeVo %>><%=typeVo %><br>
+        <input type="checkbox" name="operatingSystem" value=<%=typeVo.replace(" ", "")%> > <%=typeVo %> <br>
         <%
 
 
             }
         %>
-    </select><br>
+        </select><br>
 
-    <input type="submit" value="下一步"  > <br>
-</form>
+        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
+            <span>下一步</span></button></div>
+
+    </form>
+
+
+</div>
+
+<%--提交--%>
+<script type="text/javascript" >
+    function doSubmitForm() {
+        if(document.getElementsByName("operatingSystem")==null)
+            alert("error!");
+        else
+            document.getElementById("systemSelect").submit();
+    }
+</script>
+
+
 </body>
 </html>

@@ -173,7 +173,7 @@ public class KrryController {
     }
 
     /**
-     * 选择操作系统
+     * 选择操作系统,并载入所有MES系统
      * com.krry.controller.operatingSystem
      * 方法名：operatingSystem
      * @author kunkun
@@ -185,9 +185,67 @@ public class KrryController {
     @RequestMapping(method=RequestMethod.POST,value="/operatingSystem")
     public String operatingSystem(HttpServletRequest request){
 
+        List<String> operatingSystem = Arrays.asList(request.getParameterValues("operatingSystem"));
+
+//操作系统无法读取空格后的值，待修改
+        request.getSession().setAttribute("operatingSystem",operatingSystem );
+
+        List<String> allControlCell = new ArrayList();;
+        List<control_cell> control_cell = userDao.get_control_cell();
+        for(int i = 0; i < control_cell.size(); i++){
+            String controlCell = control_cell.get(i).getName();
+            allControlCell.add(i,controlCell);
+        }
+        request.getSession().setAttribute("allControlCell",allControlCell );
+        return "index/mesSelect";
+    }
+
+    /**
+     * 其他需求
+     * com.krry.controller.otherRequest
+     * 方法名：otherRequest
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.POST,value="/otherRequest")
+    public String otherRequest(HttpServletRequest request){
         return "index/success";
     }
+
+    /**
+     * 其他需求
+     * com.krry.controller.processCreat
+     * 方法名：otherRequest
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.GET,value="/processCreat")
+    public String processCreat(HttpServletRequest request){
+        return "index/processCreat";
+    }
+    /**
+     * 其他需求
+     * com.krry.controller.processSelect2
+     * 方法名：otherRequest
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.GET,value="/processSelect2")
+    public String processSelect2(HttpServletRequest request){
+        return "index/process";
+    }
+
 }
+
 //	/**
 //	 * 进入登录界面
 //	 * @return

@@ -47,7 +47,7 @@
 
         <div class="mod-set-nav">
             <ul class="clearfix li-5">
-                <li>
+                <li class="active">
                     <a>
                         <i class="ico ico-1"></i>
                         <span>产品选择</span>
@@ -71,7 +71,7 @@
                         <span>MES选择</span>
                     </a>
                 </li>
-                <li  class="active">
+                <li>
                     <a>
                         <i class="ico ico-5"></i>
                         <span>确认生成</span>
@@ -84,12 +84,6 @@
 </div>
 
 <div id="bd" style="height: 350px;width: 800px">
-    <br>
-
-    <form id="success" action="${basePath}/index/index"><P>id = ${sessionScope}<br></P></form>
-
-    <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
-        <span>返回首页</span></button></div>
 
 
 </div>
@@ -99,15 +93,3 @@
 
 </body>
 </html>
-
-
-
-<%--提交--%>
-<script type="text/javascript" >
-    function doSubmitForm() {
-        if(0)
-            alert("error!");
-        else
-            document.getElementById("success").submit();
-    }
-</script>

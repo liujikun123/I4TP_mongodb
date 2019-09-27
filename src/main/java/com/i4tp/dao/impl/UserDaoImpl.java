@@ -1,5 +1,6 @@
 package com.i4tp.dao.impl;
 
+import com.i4tp.entity.control_cell;
 import com.i4tp.entity.manufacturing_cell;
 import com.i4tp.entity.material_type;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,9 @@ public class UserDaoImpl implements IUserDao {
     }
 
     public List<manufacturing_cell> get_alleManufacturingCell(){return mongoTemplate.findAll(manufacturing_cell.class);}
+
+    public List<control_cell> get_control_cell(){return mongoTemplate.findAll(control_cell.class);}
+
 }
 
 
