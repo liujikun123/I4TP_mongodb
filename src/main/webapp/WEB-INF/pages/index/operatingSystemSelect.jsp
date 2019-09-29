@@ -24,6 +24,8 @@
     <link href="<%=cssPath%>/files/bc.css" rel="stylesheet">
     <link href="<%=cssPath%>/files/wifi.css" rel="stylesheet">
 
+    <li hidden id = "count" value = 0></li>
+
     <style type="text/css">
 
     </style>
@@ -86,8 +88,9 @@
 <div id="bd" style="height: 350px;width: 800px">
     <br>
 
+
     <form action="${basePath}/index/operatingSystem" method="post" id="systemSelect">
-       <div style="zoom: 150%">操作系统选择：(必须选，否则有BUG)</div> <br>
+       <div style="zoom: 150%">操作系统选择：</div> <br>
         <%
 
             List<String> ls = (List<String>)request.getSession().getAttribute("allOperatingSystem");
@@ -113,11 +116,23 @@
 <%--提交--%>
 <script type="text/javascript" >
     function doSubmitForm() {
-        if(document.getElementsByName("operatingSystem")==null)
-            alert("error!");
+        if(document.getElementById("count").value===0)
+            alert("未选择!");
         else
-            document.getElementById("systemSelect").submit();
+        document.getElementById("systemSelect").submit();
+          //   console.log( document.getElementById("count").value);//false
     }
+
+    $(":checkbox").click(function(){
+        if($(this).prop("checked")===true)
+//当前为选中状态
+            document.getElementById("count").value++;
+        else
+
+            document.getElementById("count").value--;
+//当前为不选中状态
+
+    })
 </script>
 
 

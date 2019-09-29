@@ -130,10 +130,13 @@
 </div>
 
 <div id="bd" style="height: 350px;width: 800px"><br>
+    <div style="display: flex;justify-content: space-around;">
+    <div>
+        <div style="display: flex;justify-content: space-around;">
     <div class="processType">选择已有工艺</div>
 
-    <div class="processType2" style="position: relative;left: 220px;bottom: 28px;"><a href="${basePath}/index/processCreat" style="display: block" >创建新工艺</a> </div>
-
+    <div class="processType2" style="position: relative;left: 10px;"><a href="${basePath}/index/processCreat" style="display: block" >创建新工艺</a> </div>
+        </div>
     <select id="processSelect" name="processSelect"  onchange="processExist()" style="height:38px; width: 330px ">
         <option value="null"> ---请选择工艺--- </option>
         <%--        <%--%>
@@ -149,14 +152,17 @@
         <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
             <span>下一步</span></button></div>
     </div>
-
-    <div style="position: relative;left: 430px; bottom: 150px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89" >
-        <div style="padding:5px 10px 20px;">
+    </div>
+    <div>
+    <div style="position: relative;left: 20px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89" >
+      <div style="padding:5px 10px 20px;">
             <p style="font-size:150%;text-align:center;">工艺信息</p>
             <form id="process"  action="${basePath}/index/processSelect" method="post">
             <pre id="" name=""> </pre>
             </form>
         </div>
+    </div>
+    </div>
     </div>
 
 </div>
