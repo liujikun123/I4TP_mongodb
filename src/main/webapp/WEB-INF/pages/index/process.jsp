@@ -87,7 +87,7 @@
 
             </div>
             <div id="userbar">
-                <span id="sysmenu" class="name s-dropdown">AMTC LOGO</span>
+                <img src="../../../files/amtc.png" alt="amtc">
             </div>
         </div>
 
