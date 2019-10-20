@@ -36,7 +36,7 @@
             <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
             <div id="nav">
                 <ul>
-                    <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+                    <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
                 </ul>
 
             </div>
@@ -85,7 +85,7 @@
 
 <div id="bd" style="height: 350px;width: 800px">
     <br>
-    <form id="partSelect"  action="${basePath}/index/partSelect" method="post">
+    <form id="partSelect"  action="${basePath}/index/process" method="post">
 
         <div style="height: 50px">
         零件选择：

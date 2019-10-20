@@ -1,8 +1,10 @@
 package com.i4tp.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+@Document(collection = "material_type")
 public class material_type {
     @Id
     private String id;

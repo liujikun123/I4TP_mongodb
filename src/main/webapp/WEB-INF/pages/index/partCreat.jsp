@@ -61,7 +61,7 @@
             <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
             <div id="nav">
                 <ul>
-                    <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+                    <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
                 </ul>
 
             </div>
@@ -112,7 +112,7 @@
 
     <br>
 
-<form action="${basePath}/index/partCreat" method="post" id="partCreat">
+<form action="${basePath}/index/process2" method="post" id="partCreat">
    <div class="inputName"> 零件名：</div><input type="text" name="partName" class="input"/><br>
     <div class="inputName"> 零件x尺寸：</div><input type="text" name="part_x" class="input"/><br>
     <div class="inputName"> 零件y尺寸：</div><input type="text" name="part_y" class="input"/><br>

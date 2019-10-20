@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
-<%@ page import="com.i4tp.entity.material_type" %>
+<%@ page import="com.i4tp.entity.*" %>
 <%@ page import="com.i4tp.entity.Part" %>
 <%@include file="../common/common.jsp" %>
 <!DOCTYPE html>
@@ -108,9 +108,9 @@
 
             z-index: 11;
 
-            width: 400px;
+            width: 800px;
 
-            height: 300px;
+            height: 400px;
 
             margin: auto;
 
@@ -218,7 +218,7 @@
             <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
             <div id="nav">
                 <ul>
-                    <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+                    <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
                 </ul>
 
             </div>
@@ -230,7 +230,7 @@
         <div class="mod-set-nav">
             <ul class="clearfix li-5">
                 <li>
-                    <a>
+                    <a href="${basePath}/index/gotoProduct">
                         <i class="ico ico-1"></i>
                         <span>产品选择</span>
                     </a>
@@ -291,6 +291,10 @@
                 <img src="" alt="这是产品特征示意图" style="border: solid;width: 150px;height: 150px">
             </div>
             <div>
+                <form action="${basePath}/index/operatingSystemSelect" method="post" id="process">
+                <div>
+                    <p>工艺名称：</p><input id="process_name" name="process_name"><br>
+                </div>
                 <div style="margin-bottom:15px;">
                     <button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
                         <span>下一步</span></button>
@@ -301,8 +305,7 @@
             <div style="position: relative;left: 20px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89">
                 <div style="padding:5px 10px 20px;">
                     <p style="font-size:150%;text-align:center;">工艺信息</p>
-                    <form id="process" action="${basePath}/index/processSelect" method="post">
-                        <pre id="p_inf" name="p_inf"></pre>
+                    <textarea id="p_inf" name="p_inf" style="border-style: none;width: 380px;height: 300px;"></textarea>
                     </form>
                 </div>
             </div>
@@ -313,13 +316,57 @@
     <div id="popLayer"></div>
     <div id="popBox">
         <div class="contentK">
-            <form>
-                <p>特征编号：</p><input id="processNum"><br>
-                <p>加工方式：</p><select id="processType"><br>
-                <option>---加工方式---</option>
-            </select>
-                <p>加工尺寸：</p><input id="processSize"><br>
-                </select>
+            <form id="processInf">
+                <div style="display: flex;justify-content: space-around;">
+                    <div>
+                        <p>特征类型：</p><select id="feature_type"><br>
+                        <option>---特征类型---</option>
+                        <%
+                            List<product_feature_type> ls2 = (List<product_feature_type>) request.getSession().getAttribute("allFeatureType");
+
+                            for (product_feature_type typeVo2 : ls2) {%>
+                        <option value="<%=typeVo2.getProduct_feature_type()%>"><%=typeVo2.getProduct_feature_type() %>
+                        </option>
+                        <%
+                            }
+                        %>
+                    </select>
+                        <p>加工方式：</p><select id="process_type"><br>
+                        <option>---加工方式---</option>
+                        <%
+                            List<process_type> ls = (List<process_type>) request.getSession().getAttribute("allProcessType");
+
+                            for (process_type typeVo : ls) {%>
+                        <option value="<%=typeVo.getProcess_type()%>"><%=typeVo.getProcess_type() %>
+                        </option>
+                        <%
+
+
+                            }
+                        %>
+                    </select>
+
+                        <p>特征编号：</p><input id="feature_number"><br>
+                        <p>基准编号：</p><input id="base_plane_number"><br>
+                    </div>
+
+                    <div>
+                        <p>精度：</p><input id="machining_accuracy_mm"><br>
+                        <p>粗糙度：</p><input id="surface_roughness_um"><br>
+                    </div>
+                </div>
+                <div>
+                    <br>
+                    <p>加工尺寸：</p><br>
+                    <div style="display: flex;justify-content: space-around;">
+                        <p>x：</p><br><input id="dimension_x">
+                        <p>y：</p><br><input id="dimension_y">
+                        <p>φ：</p><br><input id="dimension_phi">
+                        <p>h：</p><br><input id="dimension_h">
+                    </div>
+                </div>
+
+
             </form>
         </div>
 
@@ -335,23 +382,24 @@
     </div>
 </div>
 
-<script type="text/javascript">
-</script>
 
 </body>
 </html>
 
 <%--提交--%>
 <script type="text/javascript">
+
     function doSubmitForm() {
-        if (0)
-            alert("error!");
+        var input1 = document.getElementById("process_name");
+        if (!input1.value){
+            alert("未输入工艺名称!");
+            return;
+        }
         else
+    //        sessionStorage.setItem('process_name',  $("#process_name").val());
             document.getElementById("process").submit();
     }
 
-</script>
-<script>
     /*点击弹出按钮*/
     function popBox() {
         document.getElementById("show").setAttribute("class", "appear");
@@ -363,26 +411,50 @@
         document.getElementById("show").setAttribute("class", "hideK");
         document.getElementById("show").style.display;
         var oOpt0 = document.getElementById('p_inf').innerHTML;
-        var oOpt1 = document.getElementById('processNum').value;
-        var oOpt2 = document.getElementById('processType').value;
-        var oOpt3 = document.getElementById('processSize').value;
-        var oOpt = oOpt0 + "Num:" + oOpt1 + ",Type:" + oOpt2 + ",Size:" + oOpt3 + "\n";
-        $("#p_inf").text(oOpt);
-        $("#processNum").val("");
-        $("#processType").val("");
-        $("#processSize").val("");
+        var feature_type = document.getElementById('feature_type').value;
+        var process_type = document.getElementById('process_type').value;
+        var feature_number = document.getElementById('feature_number').value;
+        var base_plane_number = document.getElementById('base_plane_number').value;
+        var dimension_x = document.getElementById('dimension_x').value;
+        var dimension_y = document.getElementById('dimension_y').value;
+        var dimension_phi = document.getElementById('dimension_phi').value;
+        var dimension_h = document.getElementById('dimension_h').value;
+        var machining_accuracy_mm = document.getElementById('machining_accuracy_mm').value;
+        var surface_roughness_um = document.getElementById('surface_roughness_um').value;
+        var oOpt = oOpt0 + "feature_type:" + feature_type + ",process_type:" + process_type + ",feature_number:" + feature_number
+            + ",base_plane_number:" + base_plane_number + ",dimension_x:" + dimension_x + ",dimension_y:" + dimension_y + ",dimension_phi:" + dimension_phi
+            + ",dimension_h:" + dimension_h + ",machining_accuracy_mm:" + machining_accuracy_mm + ",surface_roughness_um:" + surface_roughness_um + "\n";
+        $("#p_inf").text(oOpt.replace(new RegExp(' ', 'g'), "_"));
+        $("#feature_type").val("---特征类型---");
+        $("#process_type").val("---加工方式---");
+        $("#feature_number").val("");
+        $("#base_plane_number").val("");
+        $("#dimension_x").val("");
+        $("#dimension_y").val("");
+        $("#dimension_phi").val("");
+        $("#dimension_h").val("");
+        $("#machining_accuracy_mm").val("");
+        $("#surface_roughness_um").val("");
     }
 
 
     function clearK() {
         $("#p_inf").text("");
     }
+
     function closeBox2() {
         document.getElementById("show").setAttribute("class", "hideK");
 
         document.getElementById("show").style.display;
-        $("#processNum").val("");
-        $("#processType").val("");
-        $("#processSize").val("");
+        $("#feature_type").val("---特征类型---");
+        $("#process_type").val("---加工方式---");
+        $("#feature_number").val("");
+        $("#base_plane_number").val("");
+        $("#dimension_x").val("");
+        $("#dimension_y").val("");
+        $("#dimension_phi").val("");
+        $("#dimension_h").val("");
+        $("#machining_accuracy_mm").val("");
+        $("#surface_roughness_um").val("");
     }
 </script>

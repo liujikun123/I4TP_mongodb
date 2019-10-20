@@ -45,6 +45,15 @@ public class KrryController {
 	}
 
     /**
+     * 进入首页
+     * @return
+     */
+    @RequestMapping(value="/gotoProduct")
+    public String gotoProduct(){
+
+        return "index/product";   //默认是转发，不会显示转发路径
+    }
+    /**
      * 前往创建新零件页面
      * com.krry.controller.gotoPartCreat
      * 方法名：gotoPartCreat
@@ -59,10 +68,6 @@ public class KrryController {
 //载入材料种类
             List<material_type> type = userDao.get_material_type();
             request.getSession().setAttribute("material_type", type);
-
-
-
-
         return "index/partCreat";
     }
     /**
@@ -75,7 +80,7 @@ public class KrryController {
      * @exception
      * @since  1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/partCreat")
+    @RequestMapping(method=RequestMethod.POST,value="/process2")
     public String partCreat(HttpServletRequest request){
 
         //获取用户和密码
@@ -92,6 +97,7 @@ public class KrryController {
         if(TmStringUtils.isEmpty(partName) )return "index/allError";
 
         //执行到这里，说明可以注册
+
         Part newPart = new Part(partName, part_dimensions,material,workpiece_weight_kg,multiaspect,rotation);
         //调用注册方法
         userDao.saveOrUpdateUser(newPart);
@@ -132,17 +138,28 @@ public class KrryController {
      * @exception
      * @since  1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/partSelect")
+    @RequestMapping(method=RequestMethod.POST,value="/process")
     public String partSelect(HttpServletRequest request){
-
+        request.getSession().removeAttribute("allPart");
         String product = request.getParameter("production");
         String productId = product.substring(3, 27);
         request.getSession().setAttribute("productId",productId );
      //   System.out.println(product.substring(3, 27).length());
-        String process = userDao.findById(productId).getProcess();
+        Part selectProduct = userDao.findById(productId);
+        String process = selectProduct.getProcess();
+        List<process> selectProcess = userDao.findByName(process);
+        List<process_type> allProcessType = userDao.findAllProcessType();
+        List<product_feature_type> allFeatureType = userDao.findAllFeatureType();
+        request.getSession().setAttribute("process", selectProcess);
+        request.getSession().setAttribute("allProcessType", allProcessType);
+        request.getSession().setAttribute("allFeatureType", allFeatureType);
+        if(selectProcess.size() != 0) {
+            return "index/process";
+        }
+        else{
+            return "index/processCreat";
+        }
 
-        request.getSession().setAttribute("process",process );
-        return "index/process";
     }
 
     /**
@@ -155,11 +172,67 @@ public class KrryController {
      * @exception
      * @since  1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/processSelect")
+    @RequestMapping(method=RequestMethod.POST,value="/operatingSystemSelect")
     public String processSelect(HttpServletRequest request){
 
         String processSelect = request.getParameter("p_inf");
-        request.getSession().removeAttribute("allPart");
+        String process_name = request.getParameter("process_name");
+        String[] oneStep = processSelect.split("\n");
+        for (int i = 0; i < oneStep.length; i++) {
+            String[] oneStep2=oneStep[i].split("\\:|,");
+            for (int j = 0; j < oneStep2.length; j++) {
+            }
+            String feature_type = oneStep2[1];
+            String process_type = oneStep2[3];
+            List<Double> feature_number = new ArrayList<Double>();
+            feature_number.add(Double.parseDouble(oneStep2[5].toString()));
+            List<Double> base_plane_number = new ArrayList<Double>();
+            base_plane_number.add(Double.parseDouble(oneStep2[7].toString()));
+            Double dimension_x ;
+            Double dimension_y ;
+            Double dimension_phi ;
+            Double dimension_h ;
+            Double machining_accuracy_mm ;
+            if(oneStep2[9].equals("")){
+                 dimension_x = 0.0;
+            }
+            else {
+                 dimension_x =  Double.parseDouble(oneStep2[9].toString());
+            }
+            if(oneStep2[11].equals("")){
+                 dimension_y = 0.0;
+            }
+            else {
+                 dimension_y =  Double.parseDouble(oneStep2[11].toString());
+            }
+            if(oneStep2[13].equals("")){
+                 dimension_phi = 0.0;
+            }
+            else {
+                 dimension_phi =  Double.parseDouble(oneStep2[13].toString());
+            }
+            if(oneStep2[15].equals("")){
+                 dimension_h = 0.0;
+            }
+            else {
+                 dimension_h =  Double.parseDouble(oneStep2[15].toString());
+            }
+            if(oneStep2[17].equals("")){
+                 machining_accuracy_mm = 0.0;
+            }
+            else {
+                 machining_accuracy_mm =  Double.parseDouble(oneStep2[17].toString());
+            }
+            String surface_roughness_um = oneStep2[19];
+            String dimension_M = "";
+            dimension dimension = new dimension(dimension_x, dimension_y,dimension_phi,dimension_h, dimension_M);
+            process finalProcess = new process(process_name, i,  feature_type,  process_type, feature_number,
+                    base_plane_number,  dimension, machining_accuracy_mm,surface_roughness_um);
+            System.out.println(process_name);
+            userDao.saveOrUpdateUser(finalProcess);
+
+        }
+
         request.getSession().setAttribute("processSelect",processSelect );
 
         List<String> allOperatingSystem = new ArrayList();;
@@ -182,12 +255,11 @@ public class KrryController {
      * @exception
      * @since  1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/operatingSystem")
+    @RequestMapping(method=RequestMethod.POST,value="/mesSelect")
     public String operatingSystem(HttpServletRequest request){
 
         List<String> operatingSystem = Arrays.asList(request.getParameterValues("operatingSystem"));
 
-//操作系统无法读取空格后的值，待修改
         request.getSession().setAttribute("operatingSystem",operatingSystem );
 
         List<String> allControlCell = new ArrayList();;

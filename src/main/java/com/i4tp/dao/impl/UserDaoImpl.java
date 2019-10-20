@@ -1,8 +1,6 @@
 package com.i4tp.dao.impl;
 
-import com.i4tp.entity.control_cell;
-import com.i4tp.entity.manufacturing_cell;
-import com.i4tp.entity.material_type;
+import com.i4tp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -10,7 +8,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.i4tp.dao.IUserDao;
-import com.i4tp.entity.Part;
 
 import java.util.List;
 
@@ -45,6 +42,10 @@ public class UserDaoImpl implements IUserDao {
 
         mongoTemplate.save(Part,"products");
     }
+    public void saveOrUpdateUser(process process) {
+
+        mongoTemplate.save(process,"process");
+    }
 
     public void saveManufacturingCell(manufacturing_cell mc){
 
@@ -58,9 +59,25 @@ public class UserDaoImpl implements IUserDao {
         return mongoTemplate.findById(id, Part.class);
     }
 
+
+    public List<process> findByName(String name) {
+        //根据username查询
+        Query sql = new Query(Criteria.where("name").is(name));
+        return mongoTemplate.find(sql,process.class);
+    }
     public List<Part> findAll() {
     	
         return mongoTemplate.findAll(Part.class);
+    }
+
+    public List<process_type> findAllProcessType() {
+
+        return mongoTemplate.findAll(process_type.class);
+    }
+
+    public List<product_feature_type> findAllFeatureType() {
+
+        return mongoTemplate.findAll(product_feature_type.class);
     }
 
 	public Part findByUsername(String username) {

@@ -2,6 +2,8 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ page import="com.i4tp.entity.material_type" %>
 <%@ page import="com.i4tp.entity.Part" %>
+<%@ page import="com.i4tp.entity.process" %>
+<%@ page import="org.apache.commons.lang3.ObjectUtils" %>
 <%@include file="../common/common.jsp" %>
 <!DOCTYPE html>
 <html lang="zh"><!--<![endif]--><head>
@@ -82,7 +84,7 @@
             <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
             <div id="nav">
                 <ul>
-                    <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+                    <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
                 </ul>
 
             </div>
@@ -94,7 +96,7 @@
         <div class="mod-set-nav">
             <ul class="clearfix li-5">
                 <li>
-                    <a>
+                    <a  href="${basePath}/index/gotoProduct">
                         <i class="ico ico-1"></i>
                         <span>产品选择</span>
                     </a>
@@ -137,15 +139,16 @@
 
     <div class="processType2" style="position: relative;left: 10px;"><a href="${basePath}/index/processCreat" style="display: block" >创建新工艺</a> </div>
         </div>
-    <select id="processSelect" name="processSelect"  onchange="processExist()" style="height:38px; width: 330px ">
+    <select id="processSelect" name="processSelect"  onchange="myFunction()" style="height:38px; width: 330px ">
         <option value="null"> ---请选择工艺--- </option>
-        <%--        <%--%>
-        <%--            List<processType> ls = (List<processType>)request.getSession().getAttribute("allProcess");--%>
-        <%--            for (processType typeVo : ls) {%>--%>
-        <%--        <option value="<%=typeVo%>"> <%=typeVo.getPartName() %> </option>--%>
-        <%--        <%--%>
-        <%--            }--%>
-        <%--        %>--%>
+                <%
+        List<process> ls = (List<process>)request.getSession().getAttribute("process");
+
+        if( ls.size() !=0  ) {%>
+        <option value="<%=ls%>"> <%=ls.get(0).getName() %> </option>
+        <%
+        }
+        %>
     </select><br>
 
     <div style="position: relative; top: 200px">
@@ -157,8 +160,11 @@
     <div style="position: relative;left: 20px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89" >
       <div style="padding:5px 10px 20px;">
             <p style="font-size:150%;text-align:center;">工艺信息</p>
-            <form id="process"  action="${basePath}/index/processSelect" method="post">
-            <pre id="" name=""> </pre>
+
+            <form id="process"  action="${basePath}/index/operatingSystemSelect" method="post">
+                <textarea id="p_inf" style="border-style: none;width: 380px;height: 300px;">
+                </textarea>
+
             </form>
         </div>
     </div>
@@ -177,6 +183,7 @@
 <script type="text/javascript" >
     function myFunction() {
         var oOpt = document.getElementById('processSelect').value;
+        console.log(oOpt);
         $("#p_inf").text(oOpt);
 
     }

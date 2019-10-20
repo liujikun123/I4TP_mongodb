@@ -35,7 +35,7 @@
             <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
             <div id="nav">
                 <ul>
-                    <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+                    <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
                 </ul>
 
             </div>

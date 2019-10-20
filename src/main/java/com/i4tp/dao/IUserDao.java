@@ -2,10 +2,7 @@ package com.i4tp.dao;
 
 import java.util.List;
 
-import com.i4tp.entity.Part;
-import com.i4tp.entity.control_cell;
-import com.i4tp.entity.manufacturing_cell;
-import com.i4tp.entity.material_type;
+import com.i4tp.entity.*;
 
 /**
  * 
@@ -32,6 +29,7 @@ public interface IUserDao {
      * @param Part
      */
     public void saveOrUpdateUser(Part Part);
+    public void saveOrUpdateUser(process process);
 
 
     /**
@@ -40,13 +38,16 @@ public interface IUserDao {
      * @return
      */
     public Part findById(String id);
-    
+
+    public List<process> findByName(String name);
     /**
      * 根据用户名查询
      * @param id
      * @return
      */
     public Part findByUsername(String partName);
+    public List<process_type> findAllProcessType();
+    public List<product_feature_type> findAllFeatureType();
 
 
     /**

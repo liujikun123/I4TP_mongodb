@@ -47,7 +47,7 @@
         <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO" ></h1>
         <div id="nav">
           <ul>
-            <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+            <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
           </ul>
 
         </div>
@@ -97,26 +97,19 @@
   <div id="bd" style="height: 100px;width: 800px">
     <br>
 
-    <div class="gotoPartCreat">
-
-        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=gotoPartCreat()><span>新建产品</span></button></div>
-
+    <div>
+      <a>欢迎使用交钥匙工厂生产系统配置与重构平台</a><br><br><br>
     </div>
 
     <div class="gotoPartSelect">
-        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=gotoPartSelect()><span>选择产品</span></button></div>
+        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=gotoProduct()><span>开始使用</span></button></div>
   </div>
   </div>
   </body>
 
 <script type="text/javascript" >
-  function gotoPartCreat(){
-    window.location.href="${basePath}/index/gotoPartCreat";
-  }
-</script>
-<script type="text/javascript" >
-  function gotoPartSelect(){
-    window.location.href="${basePath}/index/gotoPartSelect";
+  function gotoProduct(){
+    window.location.href="${basePath}/index/gotoProduct";
   }
 </script>
 </html>

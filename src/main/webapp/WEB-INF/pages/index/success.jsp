@@ -36,7 +36,7 @@
             <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
             <div id="nav">
                 <ul>
-                    <li><a href="${basePath}/index/index">I4TP xxxxxxxxx 使能工具</a></li>
+                    <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
                 </ul>
 
             </div>
@@ -47,26 +47,26 @@
 
         <div class="mod-set-nav">
             <ul class="clearfix li-5">
-                <li>
-                    <a>
+                <li >
+                    <a href="${basePath}/index/gotoProduct">
                         <i class="ico ico-1"></i>
                         <span>产品选择</span>
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <a href="${basePath}/index/processCreat">
                         <i class="ico ico-2"></i>
                         <span>工艺设定</span>
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <a href="${basePath}/index/operatingSystemSelect">
                         <i class="ico ico-3"></i>
                         <span>操作系统选择</span>
                     </a>
                 </li>
                 <li>
-                    <a>
+                    <a href="${basePath}/index/mesSelect">
                         <i class="ico ico-4"></i>
                         <span>MES选择</span>
                     </a>
