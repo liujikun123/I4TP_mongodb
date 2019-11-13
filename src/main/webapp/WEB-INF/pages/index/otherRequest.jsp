@@ -1,16 +1,18 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page import="com.i4tp.entity.material_type" %>
+<%@ page import="com.i4tp.entity.Part" %>
 <%@include file="../common/common.jsp" %>
 <!DOCTYPE html>
-<html lang="zh"><!--<![endif]--><head>
+<html lang="zh"><!--<![endif]-->
+<head>
     <meta http-equiv="X-UA-Compatible" content="edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="renderer" content="webkit">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <style>
-        body {
-            filter: none;
-        }
     </style>
-    <title>新建工程</title>
+    <title>用户需求</title>
 
     <%
         String cssPath = request.getContextPath();
@@ -47,37 +49,37 @@
 
             <div class="mod-set-nav">
                 <ul class="clearfix li-5">
-                    <li class="active">
+                    <li >
                         <a href="${basePath}/index/gotoProduct">
                             <i class="ico ico-1"></i>
                             <span>产品参数</span>
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a href="${basePath}/index/processCreat">
                             <i class="ico ico-2"></i>
                             <span>工艺参数</span>
                         </a>
                     </li>
                     <li>
-                        <a>
+                        <a href="${basePath}/index/gotooperatingSystemSelect">
                             <i class="ico ico-3"></i>
                             <span>操作系统选择</span>
                         </a>
                     </li>
-                    <li>
-                        <a>
+                    <li >
+                        <a href="${basePath}/index/mesSelect">
                             <i class="ico ico-4"></i>
                             <span>MES选择</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a>
                             <i class="ico ico-5"></i>
                             <span>用户需求</span>
                         </a>
                     </li>
-                    <li>
+                    <li >
                         <a>
                             <i class="ico ico-6"></i>
                             <span>明细浏览</span>
@@ -94,30 +96,42 @@
 
         </div>
     </div>
-<div id="bd" style="height:auto;width: 800px">
-    <div style="margin: 25px;text-align: center;">
-    <div style="margin: 25px;">
+    <div id="bd" style="height: auto;width: 800px">
+        <br>
+        <div style="zoom: 150%">其它用户需求：</div> <br>
 
-        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=gotoPartCreat()><span>新建产品</span></button></div>
+        <form id="otherRequest" action="${basePath}/index/success"  method="post">
+            <div class="inputName"> 合格率：</div><input type="text" name="part_x" class="input"/><br>
+        </form>
 
-    </div>
+        <div style="margin-top:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
+            <span>下一步</span></button></div>
 
-    <div style="margin: 25px;">
-        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=gotoPartSelect()><span>选择产品</span></button></div>
-    </div>
+
     </div>
 </div>
-</div>
+
+<script type="text/javascript" >
+</script>
+
 </body>
-
-<script type="text/javascript" >
-    function gotoPartCreat(){
-        window.location.href="${basePath}/index/gotoPartCreat";
-    }
-</script>
-<script type="text/javascript" >
-    function gotoPartSelect(){
-        window.location.href="${basePath}/index/gotoPartSelect";
-    }
-</script>
 </html>
+
+
+
+<%--提交--%>
+<script type="text/javascript" >
+    function doSubmitForm() {
+        if(0)
+            alert("error!");
+        else
+            document.getElementById("otherRequest").submit();
+    }
+    //init method one
+    jQuery(function($){
+        init("初始化方法进入三");
+    });
+    function init(){
+        return 0;
+    }
+</script>

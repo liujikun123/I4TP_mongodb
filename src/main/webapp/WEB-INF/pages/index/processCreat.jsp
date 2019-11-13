@@ -212,62 +212,78 @@
 </head>
 <body>
 
-<div id="hd">
-    <div class="inner">
-        <div class="mod-head clearfix">
-            <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
-            <div id="nav">
-                <ul>
-                    <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
-                </ul>
-
-            </div>
-            <div id="userbar">
-                <img src="../../../files/amtc.png" alt="amtc">
-            </div>
-        </div>
-
-        <div class="mod-set-nav">
-            <ul class="clearfix li-5">
-                <li>
-                    <a href="${basePath}/index/gotoProduct">
-                        <i class="ico ico-1"></i>
-                        <span>产品选择</span>
-                    </a>
-                </li>
-                <li class="active">
-                    <a>
-                        <i class="ico ico-2"></i>
-                        <span>工艺设定</span>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <i class="ico ico-3"></i>
-                        <span>操作系统选择</span>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <i class="ico ico-4"></i>
-                        <span>MES选择</span>
-                    </a>
-                </li>
-                <li>
-                    <a>
-                        <i class="ico ico-5"></i>
-                        <span>确认生成</span>
-                    </a>
-                </li>
+<div id="hd0">
+    <div class="mod-head clearfix">
+        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO" ></h1>
+        <div id="nav">
+            <ul>
+                <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
             </ul>
-        </div>
 
+        </div>
+        <div id="userbar">
+            <img src="../../../files/amtc.png" alt="amtc">
+        </div>
     </div>
 </div>
 
-<div id="bd" style="height: 350px;width: 800px"><br>
+<div id="allPage">
+    <div id="hd">
+        <div class="inner">
 
-    <div style="display: flex;justify-content: space-around;">
+            <div class="mod-set-nav">
+                <ul class="clearfix li-5">
+                    <li >
+                        <a href="${basePath}/index/gotoProduct">
+                            <i class="ico ico-1"></i>
+                            <span>产品参数</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="${basePath}/index/processCreat">
+                            <i class="ico ico-2"></i>
+                            <span>工艺参数</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="ico ico-3"></i>
+                            <span>操作系统选择</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="ico ico-4"></i>
+                            <span>MES选择</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="ico ico-5"></i>
+                            <span>用户需求</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="ico ico-6"></i>
+                            <span>明细浏览</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <i class="ico ico-7"></i>
+                            <span>配置生成</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+<div id="bd" style="height: auto;width: 800px"><br>
+
+<%--    <div style="display: flex;justify-content: space-around;">--%>
+        <form action="${basePath}/index/operatingSystemSelect" method="post" id="process" style="display: flex;justify-content: space-around;">
         <div>
             <div style="display: flex;justify-content: space-around;">
                 <div class="processType2"><a href="${basePath}/index/processSelect2" style="display: block">选择已有工艺</a>
@@ -291,11 +307,11 @@
                 <img src="" alt="这是产品特征示意图" style="border: solid;width: 150px;height: 150px">
             </div>
             <div>
-                <form action="${basePath}/index/operatingSystemSelect" method="post" id="process">
+
                 <div>
                     <p>工艺名称：</p><input id="process_name" name="process_name"><br>
                 </div>
-                <div style="margin-bottom:15px;">
+                <div style="margin-top:15px;">
                     <button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
                         <span>下一步</span></button>
                 </div>
@@ -306,11 +322,13 @@
                 <div style="padding:5px 10px 20px;">
                     <p style="font-size:150%;text-align:center;">工艺信息</p>
                     <textarea id="p_inf" name="p_inf" style="border-style: none;width: 380px;height: 300px;"></textarea>
-                    </form>
+
                 </div>
             </div>
         </div>
-    </div>
+        </form>
+<%--    </div>--%>
+</div>
 </div>
 <div class="hideK" id="show">
     <div id="popLayer"></div>

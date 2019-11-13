@@ -9,13 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import com.i4tp.dao.IUserDao;
 import com.i4tp.util.TmStringUtils;
-
+import org.n52.matlab.control.*;
 
 
 
@@ -32,14 +30,23 @@ public class KrryController {
 
 	@Autowired
 	private IUserDao userDao;
+    private MatlabProxyFactory factory = new MatlabProxyFactory();
+    private MatlabProxy proxy = factory.getProxy();
 
+    public KrryController() throws MatlabConnectionException {
+    }
 
-	/**
+    /**
 	 * 进入首页
 	 * @return
 	 */
 	@RequestMapping(value="/index")
-	public String index(){
+	public String index() throws MatlabConnectionException, MatlabInvocationException {
+
+            double p = 2;
+            Object[] result1 = proxy.returningFeval("demo",1,p);//这里有很多参数，仅保留部分参数供大家理解用。proxy.returningFeva方法是执行m文件。
+            double[] r=(double[]) result1[0];
+            System.out.println(r[0]);
 
 		return "index/index";   //默认是转发，不会显示转发路径
 	}
@@ -176,6 +183,19 @@ public class KrryController {
     public String processSelect(HttpServletRequest request){
 
         String processSelect = request.getParameter("p_inf");
+
+        String processSelect2 = request.getParameter("p_inf2");
+
+        List<String> allOperatingSystem = new ArrayList();;
+        List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
+        for(int i = 0; i < manufacturing.size(); i++){
+            String operatingSystem = manufacturing.get(i).getOperating_system();
+            allOperatingSystem.add(i,operatingSystem);
+        }
+        request.getSession().setAttribute("allOperatingSystem",allOperatingSystem );
+        if(processSelect2 != ""){
+            return "index/operatingSystemSelect";
+        }
         String process_name = request.getParameter("process_name");
         String[] oneStep = processSelect.split("\n");
         for (int i = 0; i < oneStep.length; i++) {
@@ -228,22 +248,30 @@ public class KrryController {
             dimension dimension = new dimension(dimension_x, dimension_y,dimension_phi,dimension_h, dimension_M);
             process finalProcess = new process(process_name, i,  feature_type,  process_type, feature_number,
                     base_plane_number,  dimension, machining_accuracy_mm,surface_roughness_um);
-            System.out.println(process_name);
+          //  System.out.println(process_name);
             userDao.saveOrUpdateUser(finalProcess);
 
         }
 
-        request.getSession().setAttribute("processSelect",processSelect );
+//        request.getSession().setAttribute("processSelect",processSelect );
 
-        List<String> allOperatingSystem = new ArrayList();;
-        List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
-        for(int i = 0; i < manufacturing.size(); i++){
-            String operatingSystem = manufacturing.get(i).getOperating_system();
-            allOperatingSystem.add(i,operatingSystem);
-        }
-        request.getSession().setAttribute("allOperatingSystem",allOperatingSystem );
         return "index/operatingSystemSelect";
     }
+
+    /**
+     * 选择工艺,读取所有机床信息，得到其中所有的操作系统
+     * com.krry.controller.processSelect
+     * 方法名：processSelect
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.GET,value="/gotooperatingSystemSelect")
+    public String gotooperatingSystemSelect(HttpServletRequest request){
+        return "index/operatingSystemSelect";
+        }
 
     /**
      * 选择操作系统,并载入所有MES系统
@@ -284,6 +312,20 @@ public class KrryController {
      */
     @RequestMapping(method=RequestMethod.POST,value="/otherRequest")
     public String otherRequest(HttpServletRequest request){
+        return "index/otherRequest";
+    }
+    /**
+     * 其他需求
+     * com.krry.controller.otherRequest
+     * 方法名：otherRequest
+     * @author kunkun
+     * @param request
+     * @return string
+     * @exception
+     * @since  1.0.0
+     */
+    @RequestMapping(method=RequestMethod.POST,value="/success")
+    public String success(HttpServletRequest request){
         return "index/success";
     }
 
