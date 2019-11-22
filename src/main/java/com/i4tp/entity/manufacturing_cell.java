@@ -8,15 +8,12 @@ import java.util.List;
 
 
 /**
+ * @author krry
+ * @version 1.0.0
  * @Document(collection = "user")这个注解和Hibernate的注解Entiry非常相似，
  * 就是定义一个文档，对象MongoDB存储的Collection（表）的名称是user
  * @Id指该字段是主键，不能缺少
- * @Field("username")指该字段映射MongoDB的实际字段，如果一致可以省略、
- *
- * User
- * @author krry
- * @version 1.0.0
- *
+ * @Field("username")指该字段映射MongoDB的实际字段，如果一致可以省略、 User
  */
 @Document(collection = "manufacturing_cell")
 public class manufacturing_cell {
@@ -27,8 +24,8 @@ public class manufacturing_cell {
     private String operating_system;
     private String manufacturer;
     private List<String> process_type;
-    private  workspace_mm workspace_mm;
-    private  max_dimensions_of_workpiece_mm max_dimensions_of_workpiece_mm;
+    private workspace_mm workspace_mm;
+    private max_dimensions_of_workpiece_mm max_dimensions_of_workpiece_mm;
     private Boolean ability_of_multiaspect;
     private Boolean ability_of_processing_unrotated_part;
     private double durable_weight_kg;
@@ -41,11 +38,14 @@ public class manufacturing_cell {
     private List<String> spindle_interface;
     private List<String> bus_interface;
     private List<String> data_protocol;
+    private double mFactor = 1.0;
+    private double tFactor = 1.0;
+    private double max_power_kW = 40;
 
     public manufacturing_cell() {
     }
 
-    public manufacturing_cell(String name, String device_model, String operating_system, String manufacturer, List<String> process_type, com.i4tp.entity.workspace_mm workspace_mm, com.i4tp.entity.max_dimensions_of_workpiece_mm max_dimensions_of_workpiece_mm, Boolean ability_of_multiaspect, Boolean ability_of_processing_unrotated_part, double durable_weight_kg, double max_rotated_speed_rpm, double max_feed_speed_mm_min, double max_holding_torque_N_m, double best_surface_roughness_um, double best_surface_accuracy_mm, double best_storage_capacity, List<String> spindle_interface, List<String> bus_interface, List<String> data_protocol) {
+    public manufacturing_cell(String name, String device_model, String operating_system, String manufacturer, List<String> process_type, com.i4tp.entity.workspace_mm workspace_mm, com.i4tp.entity.max_dimensions_of_workpiece_mm max_dimensions_of_workpiece_mm, Boolean ability_of_multiaspect, Boolean ability_of_processing_unrotated_part, double durable_weight_kg, double max_rotated_speed_rpm, double max_feed_speed_mm_min, double max_holding_torque_N_m, double best_surface_roughness_um, double best_surface_accuracy_mm, double best_storage_capacity, List<String> spindle_interface, List<String> bus_interface, List<String> data_protocol, double mFactor, double tFactor, double max_power_kW) {
         this.name = name;
         this.device_model = device_model;
         this.operating_system = operating_system;
@@ -65,7 +65,9 @@ public class manufacturing_cell {
         this.spindle_interface = spindle_interface;
         this.bus_interface = bus_interface;
         this.data_protocol = data_protocol;
-        System.out.println("bool构造");
+        this.mFactor = mFactor;
+        this.tFactor = tFactor;
+        this.max_power_kW = max_power_kW;
     }
 
     public com.i4tp.entity.workspace_mm getWorkspace_mm() {
@@ -82,6 +84,14 @@ public class manufacturing_cell {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public double getMax_power_kW() {
+        return max_power_kW;
+    }
+
+    public void setMax_power_kW(double max_power_kW) {
+        this.max_power_kW = max_power_kW;
     }
 
     public String getName() {
@@ -146,6 +156,22 @@ public class manufacturing_cell {
 
     public void setAbility_of_processing_unrotated_part(Boolean ability_of_processing_unrotated_part) {
         this.ability_of_processing_unrotated_part = ability_of_processing_unrotated_part;
+    }
+
+    public double getmFactor() {
+        return mFactor;
+    }
+
+    public void setmFactor(double mFactor) {
+        this.mFactor = mFactor;
+    }
+
+    public double gettFactor() {
+        return tFactor;
+    }
+
+    public void settFactor(double tFactor) {
+        this.tFactor = tFactor;
     }
 
     public double getDurable_weight_kg() {
@@ -251,6 +277,9 @@ public class manufacturing_cell {
                 ", spindle_interface=" + spindle_interface +
                 ", bus_interface=" + bus_interface +
                 ", data_protocol=" + data_protocol +
+                ", mFactor=" + mFactor +
+                ", tFactor=" + tFactor +
+                ", max_power_kW=" + max_power_kW +
                 '}';
     }
 }

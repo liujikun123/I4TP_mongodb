@@ -1,10 +1,10 @@
-
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
 <%@ page import="com.i4tp.entity.material_type" %>
 <%@ page import="com.i4tp.entity.Part" %>
 <%@include file="../common/common.jsp" %>
 <!DOCTYPE html>
-<html lang="zh"><!--<![endif]--><head>
+<html lang="zh"><!--<![endif]-->
+<head>
     <meta http-equiv="X-UA-Compatible" content="edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="renderer" content="webkit">
@@ -18,7 +18,7 @@
 
     <%
         String cssPath = request.getContextPath();
-        String cssBasePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+        String cssBasePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     %>
     <meta name="viewport" content="width=1200">
     <link href="<%=cssPath%>/files/bc.css" rel="stylesheet">
@@ -31,7 +31,7 @@
 <body>
 <div id="hd0">
     <div class="mod-head clearfix">
-        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO" ></h1>
+        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
         <div id="nav">
             <ul>
                 <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
@@ -50,7 +50,7 @@
 
             <div class="mod-set-nav">
                 <ul class="clearfix li-5">
-                    <li >
+                    <li>
                         <a href="${basePath}/index/gotoProduct">
                             <i class="ico ico-1"></i>
                             <span>产品参数</span>
@@ -87,11 +87,11 @@
                         </a>
                     </li>
                     <li>
-                    <a>
-                        <i class="ico ico-7"></i>
-                        <span>配置生成</span>
-                    </a>
-                </li>
+                        <a>
+                            <i class="ico ico-7"></i>
+                            <span>配置生成</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -102,10 +102,10 @@
     <div id="bd" style="height: 350px;width: 800px">
 
 
-</div>
+    </div>
 </div>
 
-<script type="text/javascript" >
+<script type="text/javascript">
 </script>
 
 </body>

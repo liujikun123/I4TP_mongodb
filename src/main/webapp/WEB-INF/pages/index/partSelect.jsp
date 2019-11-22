@@ -1,10 +1,10 @@
-
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
 <%@ page import="com.i4tp.entity.material_type" %>
 <%@ page import="com.i4tp.entity.Part" %>
 <%@include file="../common/common.jsp" %>
 <!DOCTYPE html>
-<html lang="zh"><!--<![endif]--><head>
+<html lang="zh"><!--<![endif]-->
+<head>
     <meta http-equiv="X-UA-Compatible" content="edge">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="renderer" content="webkit">
@@ -18,7 +18,7 @@
 
     <%
         String cssPath = request.getContextPath();
-        String cssBasePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+        String cssBasePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     %>
     <meta name="viewport" content="width=1200">
     <link href="<%=cssPath%>/files/bc.css" rel="stylesheet">
@@ -32,7 +32,7 @@
 
 <div id="hd0">
     <div class="mod-head clearfix">
-        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO" ></h1>
+        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
         <div id="nav">
             <ul>
                 <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
@@ -98,54 +98,55 @@
 
         </div>
     </div>
-<div id="bd" style="height:auto;width: 800px">
-    <br>
-    <form id="partSelect"  action="${basePath}/index/process" method="post">
+    <div id="bd" style="height:auto;width: 800px">
+        <br>
+        <form id="partSelect" action="${basePath}/index/process" method="post">
 
-        <div style="height: 50px">
-        零件选择：
-        <select id="production" name="production"  onchange="myFunction()" style="height:34px; width: 300px ">
-            <option value="null"> ---请选择产品--- </option>
-            <%
-                List<Part> ls = (List<Part>)request.getSession().getAttribute("allPart");
-                for (Part typeVo : ls) {%>
-            <option value="<%=typeVo%>"> <%=typeVo.getPartName() %> </option>
-            <%
+            <div style="height: 50px">
+                零件选择：
+                <select id="production" name="production" onchange="myFunction()" style="height:34px; width: 300px ">
+                    <option value="null"> ---请选择产品---</option>
+                    <%
+                        List<Part> ls = (List<Part>) request.getSession().getAttribute("allPart");
+                        for (Part typeVo : ls) {%>
+                    <option value="<%=typeVo%>"><%=typeVo.getPartName() %>
+                    </option>
+                    <%
 
 
-                }
-            %>
-        </select>
-    </div>
+                        }
+                    %>
+                </select>
+            </div>
 
-    </form>
-        <div style="border:solid; width:400px; height:250px ;border-radius:25px;color: #114d89" >
+        </form>
+        <div style="border:solid; width:400px; height:250px ;border-radius:25px;color: #114d89">
             <div style="padding:5px 10px 20px;">
                 <p style="font-size:150%;text-align:center;">产品信息</p>
                 <pre id="p_inf"> </pre>
             </div>
         </div>
-<div style="position: relative; left: 450px; bottom: 200px">
-        <div style="margin-bottom:15px;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
-            <span>下一步</span></button></div>
+        <div style="position: relative; left: 450px; bottom: 200px">
+            <div style="margin-bottom:15px;">
+                <button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
+                    <span>下一步</span></button>
+            </div>
+        </div>
+
+
+    </div>
 </div>
 
-
-
-
-</div>
-</div>
-
-<script type="text/javascript" >
+<script type="text/javascript">
     function myFunction() {
         var oOpt = document.getElementById('production').value;
         $("#p_inf").text(oOpt);
 
     }
 </script>
-<script type="text/javascript" >
+<script type="text/javascript">
     function doSubmitForm() {
-        if(document.getElementById('production').value == null ||document.getElementById('production').value == "null")
+        if (document.getElementById('production').value == null || document.getElementById('production').value == "null")
             alert("error!");
         else
             document.getElementById("partSelect").submit();

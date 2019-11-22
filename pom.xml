@@ -5,7 +5,19 @@
     <artifactId>krry_mongodb</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>krry_mongodb Maven Webapp</name>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<name>krry_mongodb Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
     <dependencies>
@@ -141,11 +153,11 @@
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.3.2</version>
 	  	</dependency>
-		<!-- https://mvnrepository.com/artifact/org.n52.matlab/matlab-control -->
+
 		<dependency>
-			<groupId>org.n52.matlab</groupId>
-			<artifactId>matlab-control</artifactId>
-			<version>5.0.0</version>
+			<groupId>io.jenetics</groupId>
+			<artifactId>jenetics</artifactId>
+			<version>4.4.0</version>
 		</dependency>
 
 

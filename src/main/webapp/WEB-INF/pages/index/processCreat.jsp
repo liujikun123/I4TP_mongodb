@@ -214,7 +214,7 @@
 
 <div id="hd0">
     <div class="mod-head clearfix">
-        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO" ></h1>
+        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
         <div id="nav">
             <ul>
                 <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
@@ -233,7 +233,7 @@
 
             <div class="mod-set-nav">
                 <ul class="clearfix li-5">
-                    <li >
+                    <li>
                         <a href="${basePath}/index/gotoProduct">
                             <i class="ico ico-1"></i>
                             <span>产品参数</span>
@@ -280,55 +280,58 @@
 
         </div>
     </div>
-<div id="bd" style="height: auto;width: 800px"><br>
+    <div id="bd" style="height: auto;width: 800px"><br>
 
-<%--    <div style="display: flex;justify-content: space-around;">--%>
-        <form action="${basePath}/index/operatingSystemSelect" method="post" id="process" style="display: flex;justify-content: space-around;">
-        <div>
-            <div style="display: flex;justify-content: space-around;">
-                <div class="processType2"><a href="${basePath}/index/processSelect2" style="display: block">选择已有工艺</a>
-                </div>
-
-                <div class="processType" style="position: relative;left: 10px">创建新工艺</div>
-            </div>
-            <br>
-            <div style="display: flex;justify-content: space-around;">
-                <div style="margin-bottom:15px;">
-                    <button type="button" class="btn btn-primary btn-l" onclick="popBox()">
-                        <span style="width: 180px">+  新增工艺步骤</span></button>
-                </div>
-                <div style="margin-bottom:15px;">
-                    <button type="button" class="btn btn-primary btn-l" onclick="clearK()">
-                        <span style="width: 180px">-  清空工艺步骤</span></button>
-                </div>
-            </div>
-
+        <%--    <div style="display: flex;justify-content: space-around;">--%>
+        <form action="${basePath}/index/operatingSystemSelect" method="post" id="process"
+              style="display: flex;justify-content: space-around;">
             <div>
-                <img src="" alt="这是产品特征示意图" style="border: solid;width: 150px;height: 150px">
-            </div>
-            <div>
+                <div style="display: flex;justify-content: space-around;">
+                    <div class="processType2"><a href="${basePath}/index/processSelect2"
+                                                 style="display: block">选择已有工艺</a>
+                    </div>
+
+                    <div class="processType" style="position: relative;left: 10px">创建新工艺</div>
+                </div>
+                <br>
+                <div style="display: flex;justify-content: space-around;">
+                    <div style="margin-bottom:15px;">
+                        <button type="button" class="btn btn-primary btn-l" onclick="popBox()">
+                            <span style="width: 180px">+  新增工艺步骤</span></button>
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <button type="button" class="btn btn-primary btn-l" onclick="clearK()">
+                            <span style="width: 180px">-  清空工艺步骤</span></button>
+                    </div>
+                </div>
 
                 <div>
-                    <p>工艺名称：</p><input id="process_name" name="process_name"><br>
+                    <img src="" alt="这是产品特征示意图" style="border: solid;width: 150px;height: 150px">
                 </div>
-                <div style="margin-top:15px;">
-                    <button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
-                        <span>下一步</span></button>
-                </div>
-            </div>
-        </div>
-        <div>
-            <div style="position: relative;left: 20px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89">
-                <div style="padding:5px 10px 20px;">
-                    <p style="font-size:150%;text-align:center;">工艺信息</p>
-                    <textarea id="p_inf" name="p_inf" style="border-style: none;width: 380px;height: 300px;"></textarea>
+                <div>
 
+                    <div>
+                        <p>工艺名称：</p><input id="process_name" name="process_name"><br>
+                    </div>
+                    <div style="margin-top:15px;">
+                        <button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
+                            <span>下一步</span></button>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div>
+                <div style="position: relative;left: 20px;border:solid; width:400px; height:350px ;border-radius:25px;color: #114d89">
+                    <div style="padding:5px 10px 20px;">
+                        <p style="font-size:150%;text-align:center;">工艺信息</p>
+                        <textarea id="p_inf" name="p_inf"
+                                  style="border-style: none;width: 380px;height: 300px;"></textarea>
+
+                    </div>
+                </div>
+            </div>
         </form>
-<%--    </div>--%>
-</div>
+        <%--    </div>--%>
+    </div>
 </div>
 <div class="hideK" id="show">
     <div id="popLayer"></div>
@@ -409,12 +412,11 @@
 
     function doSubmitForm() {
         var input1 = document.getElementById("process_name");
-        if (!input1.value){
+        if (!input1.value) {
             alert("未输入工艺名称!");
             return;
-        }
-        else
-    //        sessionStorage.setItem('process_name',  $("#process_name").val());
+        } else
+        //        sessionStorage.setItem('process_name',  $("#process_name").val());
             document.getElementById("process").submit();
     }
 

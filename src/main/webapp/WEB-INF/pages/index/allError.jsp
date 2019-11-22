@@ -22,8 +22,8 @@
     <link href="../../../files/bc.css" rel="stylesheet">
     <link href="../../../files/wifi.css" rel="stylesheet">
 </head>
-  <body>
-    	发生错误<br><br>
-    	<a href="${basePath}">返回首页</a>
-  </body>
+<body>
+发生错误<br><br>
+<a href="${basePath}">返回首页</a>
+</body>
 </html>

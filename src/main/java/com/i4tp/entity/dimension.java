@@ -1,11 +1,11 @@
 package com.i4tp.entity;
 
 public class dimension {
-    double x;
-    double y;
-    double h;
-    double phi;
-    String M;
+    private Double x;
+    private Double y;
+    private Double h;
+    private Double phi;
+    private String M;
 
     public dimension() {
     }
@@ -18,7 +18,7 @@ public class dimension {
         M = m;
     }
 
-    public double getX() {
+    public Double getX() {
         return x;
     }
 
@@ -26,7 +26,7 @@ public class dimension {
         this.x = x;
     }
 
-    public double getY() {
+    public Double getY() {
         return y;
     }
 
@@ -34,7 +34,7 @@ public class dimension {
         this.y = y;
     }
 
-    public double getH() {
+    public Double getH() {
         return h;
     }
 
@@ -42,7 +42,7 @@ public class dimension {
         this.h = h;
     }
 
-    public double getPhi() {
+    public Double getPhi() {
         return phi;
     }
 

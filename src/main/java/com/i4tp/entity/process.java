@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.List;
 
 @Document(collection = "process")
-public class process{
+public class process {
 
     @Id
     private String id;
@@ -21,6 +21,10 @@ public class process{
     private String surface_roughness_um;
 
     public process() {
+    }
+
+    public process(String process_type) {
+        this.process_type = process_type;
     }
 
     public process(String name, int order, String feature_type, String process_type, List<Double> feature_number, List<Double> base_plane_number, com.i4tp.entity.dimension dimension, Double machining_accuracy_mm, String surface_roughness_um) {
@@ -47,16 +51,16 @@ public class process{
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getSurface_roughness_um() {
         return surface_roughness_um;
     }
 
     public void setSurface_roughness_um(String surface_roughness_um) {
         this.surface_roughness_um = surface_roughness_um;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getOrder() {

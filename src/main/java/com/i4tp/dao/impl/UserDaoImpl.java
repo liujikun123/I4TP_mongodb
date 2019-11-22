@@ -13,10 +13,12 @@ import java.util.List;
 
 /**
  * @author
+ * @author
  */
 /**
  * @author
  */
+
 /**
  * @author
  */
@@ -29,7 +31,7 @@ public class UserDaoImpl implements IUserDao {
     public void addUser(Part Part) {
         //1.如果没有指定集合，则默认添加到和对象名称相同的集合中，没有则创建一个
         //2.也可以指定集合 mongoTemplate.save(User, "User_db");
-        mongoTemplate.save(Part,"products");
+        mongoTemplate.save(Part, "products");
     }
 
     public void removeUser(String id) {
@@ -40,22 +42,23 @@ public class UserDaoImpl implements IUserDao {
 
     public void saveOrUpdateUser(Part Part) {
 
-        mongoTemplate.save(Part,"products");
+        mongoTemplate.save(Part, "products");
     }
+
     public void saveOrUpdateUser(process process) {
 
-        mongoTemplate.save(process,"process");
+        mongoTemplate.save(process, "process");
     }
 
-    public void saveManufacturingCell(manufacturing_cell mc){
+    public void saveManufacturingCell(manufacturing_cell mc) {
 
-        mongoTemplate.save(mc,"manufacturing_cell");
+        mongoTemplate.save(mc, "manufacturing_cell");
         System.out.println("执行了。。。");
 
     }
 
     public Part findById(String id) {
-    	
+
         return mongoTemplate.findById(id, Part.class);
     }
 
@@ -63,10 +66,11 @@ public class UserDaoImpl implements IUserDao {
     public List<process> findByName(String name) {
         //根据username查询
         Query sql = new Query(Criteria.where("name").is(name));
-        return mongoTemplate.find(sql,process.class);
+        return mongoTemplate.find(sql, process.class);
     }
+
     public List<Part> findAll() {
-    	
+
         return mongoTemplate.findAll(Part.class);
     }
 
@@ -80,12 +84,13 @@ public class UserDaoImpl implements IUserDao {
         return mongoTemplate.findAll(product_feature_type.class);
     }
 
-	public Part findByUsername(String username) {
-		//根据username查询
-		Query sql = new Query(Criteria.where("partName").is(username));
-		return mongoTemplate.findOne(sql,Part.class);
-	}
-//查找所有材料种类
+    public Part findByUsername(String username) {
+        //根据username查询
+        Query sql = new Query(Criteria.where("partName").is(username));
+        return mongoTemplate.findOne(sql, Part.class);
+    }
+
+    //查找所有材料种类
     public List<material_type> get_material_type() {
         return mongoTemplate.findAll(material_type.class);
     }
@@ -94,9 +99,17 @@ public class UserDaoImpl implements IUserDao {
         return mongoTemplate.findAll(Part.class);
     }
 
-    public List<manufacturing_cell> get_alleManufacturingCell(){return mongoTemplate.findAll(manufacturing_cell.class);}
+    public List<process_type> get_allProcess_type() {
+        return mongoTemplate.findAll(process_type.class);
+    }
 
-    public List<control_cell> get_control_cell(){return mongoTemplate.findAll(control_cell.class);}
+    public List<manufacturing_cell> get_alleManufacturingCell() {
+        return mongoTemplate.findAll(manufacturing_cell.class);
+    }
+
+    public List<control_cell> get_control_cell() {
+        return mongoTemplate.findAll(control_cell.class);
+    }
 
 }
 

@@ -6,15 +6,12 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 
 /**
+ * @author krry
+ * @version 1.0.0
  * @Document(collection = "user")这个注解和Hibernate的注解Entiry非常相似，
  * 就是定义一个文档，对象MongoDB存储的Collection（表）的名称是user
  * @Id指该字段是主键，不能缺少
- * @Field("username")指该字段映射MongoDB的实际字段，如果一致可以省略、
- *
- * User
- * @author krry
- * @version 1.0.0
- *
+ * @Field("username")指该字段映射MongoDB的实际字段，如果一致可以省略、 User
  */
 @Document(collection = "products")
 public class Part {
@@ -63,16 +60,16 @@ public class Part {
         return material_type;
     }
 
+    public void setMaterial(String material) {
+        this.material_type = material;
+    }
+
     public com.i4tp.entity.workpiece_dimensions getWorkpiece_dimensions() {
         return workpiece_dimensions;
     }
 
     public void setWorkpiece_dimensions(com.i4tp.entity.workpiece_dimensions workpiece_dimensions) {
         this.workpiece_dimensions = workpiece_dimensions;
-    }
-
-    public void setMaterial(String material) {
-        this.material_type = material;
     }
 
     public double getWorkpiece_weight_kg() {
@@ -112,13 +109,13 @@ public class Part {
     public String toString() {
         return
                 "id=" + id + '\n' +
-                "partName=" + partName + '\n' +
-                "workpiece_dimensions_x=" + workpiece_dimensions + '\n'+
-                "material=" + material_type + '\n' +
-                "workpiece_weight_kg=" + workpiece_weight_kg +'\n'+
-                "multiaspect=" + multiaspect +'\n'+
-                "rotation=" + rotation +'\n'+
-                "process=" + process + '\n'
+                        "partName=" + partName + '\n' +
+                        "workpiece_dimensions_x=" + workpiece_dimensions + '\n' +
+                        "material=" + material_type + '\n' +
+                        "workpiece_weight_kg=" + workpiece_weight_kg + '\n' +
+                        "multiaspect=" + multiaspect + '\n' +
+                        "rotation=" + rotation + '\n' +
+                        "process=" + process + '\n'
                 ;
     }
 }

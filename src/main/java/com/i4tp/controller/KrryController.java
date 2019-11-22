@@ -3,6 +3,7 @@ package com.i4tp.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.i4tp.core.GA;
 import com.i4tp.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,107 +13,119 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.*;
 
 import com.i4tp.dao.IUserDao;
-import com.i4tp.util.TmStringUtils;
-import org.n52.matlab.control.*;
-
-
-
-
 
 
 /**
  * Controller层，作为请求转发
  * 页面所有路径的访问方法:控制层的命名空间+@RequestMapping的value
- * */
+ */
 @Controller
 @RequestMapping("/index")
 public class KrryController {
 
-	@Autowired
-	private IUserDao userDao;
-    private MatlabProxyFactory factory = new MatlabProxyFactory();
-    private MatlabProxy proxy = factory.getProxy();
+    @Autowired
+    private IUserDao userDao;
 
-    public KrryController() throws MatlabConnectionException {
+    public KrryController() {
     }
-
-    /**
-	 * 进入首页
-	 * @return
-	 */
-	@RequestMapping(value="/index")
-	public String index() throws MatlabConnectionException, MatlabInvocationException {
-
-            double p = 2;
-            Object[] result1 = proxy.returningFeval("demo",1,p);//这里有很多参数，仅保留部分参数供大家理解用。proxy.returningFeva方法是执行m文件。
-            double[] r=(double[]) result1[0];
-            System.out.println(r[0]);
-
-		return "index/index";   //默认是转发，不会显示转发路径
-	}
 
     /**
      * 进入首页
+     *
      * @return
      */
-    @RequestMapping(value="/gotoProduct")
-    public String gotoProduct(){
+    @RequestMapping(value = "/index")
+    public String index() {
+//            double p = 2;
+//            Object[] result1 = proxy.returningFeval("demo",1,p);//这里有很多参数，仅保留部分参数供大家理解用。proxy.returningFeva方法是执行m文件。
+//            double[] r=(double[]) result1[0];
+//            System.out.println(r[0]);
+
+        return "index/index";   //默认是转发，不会显示转发路径
+    }
+
+    /**
+     * 测试
+     *
+     * @return
+     */
+    @RequestMapping(value = "/gotoTest")
+    public String test() {
+        List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
+        List<process_type> allProcessType = userDao.get_allProcess_type();
+        List<process> allProcess = userDao.findByName("valve_block_process");
+        GA testA = new GA();
+        int productsNum = 1000;
+        testA.main(manufacturing, allProcess, allProcessType, productsNum);
+        return "index/index";
+    }
+
+    /**
+     * 创建零件
+     *
+     * @return
+     */
+    @RequestMapping(value = "/gotoProduct")
+    public String gotoProduct() {
 
         return "index/product";   //默认是转发，不会显示转发路径
     }
+
     /**
      * 前往创建新零件页面
      * com.krry.controller.gotoPartCreat
      * 方法名：gotoPartCreat
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(value="/gotoPartCreat")
-    public String gotoPartCreat(HttpServletRequest request){
+    @RequestMapping(value = "/gotoPartCreat")
+    public String gotoPartCreat(HttpServletRequest request) {
 //载入材料种类
-            List<material_type> type = userDao.get_material_type();
-            request.getSession().setAttribute("material_type", type);
+        List<material_type> type = userDao.get_material_type();
+        request.getSession().setAttribute("material_type", type);
         return "index/partCreat";
     }
+
     /**
      * 创建新零件
      * com.krry.controller.partCreat
      * 方法名：partCreat
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/process2")
-    public String partCreat(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.POST, value = "/process2")
+    public String partCreat(HttpServletRequest request) {
 
         //获取用户和密码
         String partName = request.getParameter("partName");
         double part_x = Double.parseDouble(request.getParameter("part_x"));
         double part_y = Double.parseDouble(request.getParameter("part_y"));
         double part_z = Double.parseDouble(request.getParameter("part_z"));
-        workpiece_dimensions part_dimensions = new workpiece_dimensions(part_x,part_y,part_z);
+        workpiece_dimensions part_dimensions = new workpiece_dimensions(part_x, part_y, part_z);
         String material = request.getParameter("material_type");
         double workpiece_weight_kg = Double.parseDouble(request.getParameter("workpiece_weight_kg"));
         Boolean multiaspect = Boolean.parseBoolean(request.getParameter("multiaspect"));
         Boolean rotation = Boolean.parseBoolean(request.getParameter("rotation"));
-        //如果邮箱和密码为null,那么就返回已null标识
-        if(TmStringUtils.isEmpty(partName) )return "index/allError";
 
         //执行到这里，说明可以注册
 
-        Part newPart = new Part(partName, part_dimensions,material,workpiece_weight_kg,multiaspect,rotation);
+        Part newPart = new Part(partName, part_dimensions, material, workpiece_weight_kg, multiaspect, rotation);
         //调用注册方法
         userDao.saveOrUpdateUser(newPart);
         //将信息设置session作用域
         request.getSession().setAttribute("productId", newPart.getId());
-       // System.out.println(newPart.getId().length());
+        request.getSession().setAttribute("finalProductName", partName);
+        // System.out.println(newPart.getId().length());
         String process = newPart.getProcess();
-        request.getSession().setAttribute("process",process );
+        request.getSession().setAttribute("process", process);
         return "index/process";
     }
 
@@ -121,14 +134,15 @@ public class KrryController {
      * 前往选择零件页面
      * com.krry.controller.gotoPartSelect
      * 方法名：gotoPartCreat
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(value="/gotoPartSelect")
-    public String gotoPartSelect(HttpServletRequest request){
+    @RequestMapping(value = "/gotoPartSelect")
+    public String gotoPartSelect(HttpServletRequest request) {
 //载入所有零件
         List<Part> type = userDao.get_allParts();
         request.getSession().setAttribute("allPart", type);
@@ -139,20 +153,23 @@ public class KrryController {
      * 选择已有零件
      * com.krry.controller.partSelect
      * 方法名：partSelect
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/process")
-    public String partSelect(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.POST, value = "/process")
+    public String partSelect(HttpServletRequest request) {
         request.getSession().removeAttribute("allPart");
         String product = request.getParameter("production");
         String productId = product.substring(3, 27);
-        request.getSession().setAttribute("productId",productId );
-     //   System.out.println(product.substring(3, 27).length());
+        request.getSession().setAttribute("productId", productId);
+        //   System.out.println(product.substring(3, 27).length());
         Part selectProduct = userDao.findById(productId);
+        String productName = selectProduct.getPartName();
+        request.getSession().setAttribute("finalProductName", productName);
         String process = selectProduct.getProcess();
         List<process> selectProcess = userDao.findByName(process);
         List<process_type> allProcessType = userDao.findAllProcessType();
@@ -160,10 +177,9 @@ public class KrryController {
         request.getSession().setAttribute("process", selectProcess);
         request.getSession().setAttribute("allProcessType", allProcessType);
         request.getSession().setAttribute("allFeatureType", allFeatureType);
-        if(selectProcess.size() != 0) {
+        if (selectProcess.size() != 0) {
             return "index/process";
-        }
-        else{
+        } else {
             return "index/processCreat";
         }
 
@@ -173,33 +189,42 @@ public class KrryController {
      * 选择工艺,读取所有机床信息，得到其中所有的操作系统
      * com.krry.controller.processSelect
      * 方法名：processSelect
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/operatingSystemSelect")
-    public String processSelect(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.POST, value = "/operatingSystemSelect")
+    public String processSelect(HttpServletRequest request) {
+//        创建的工艺
 
-        String processSelect = request.getParameter("p_inf");
+        request.getSession().removeAttribute("process");
+        request.getSession().removeAttribute("allProcessType");
+        request.getSession().removeAttribute("allFeatureType");
+        String processCreat = request.getParameter("p_inf");
 
-        String processSelect2 = request.getParameter("p_inf2");
-
-        List<String> allOperatingSystem = new ArrayList();;
+        request.getSession().removeAttribute("p_inf");
+//        选择的工艺名称
+        String processSelect = request.getParameter("processSelect");
+        request.getSession().removeAttribute("processSelect");
+        List<String> allOperatingSystem = new ArrayList();
         List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
-        for(int i = 0; i < manufacturing.size(); i++){
+//        System.out.println(manufacturing);
+        for (int i = 0; i < manufacturing.size(); i++) {
             String operatingSystem = manufacturing.get(i).getOperating_system();
-            allOperatingSystem.add(i,operatingSystem);
+            allOperatingSystem.add(i, operatingSystem);
         }
-        request.getSession().setAttribute("allOperatingSystem",allOperatingSystem );
-        if(processSelect2 != ""){
+        request.getSession().setAttribute("allOperatingSystem", allOperatingSystem);
+        if (!processSelect.equals("")) {
+            request.getSession().setAttribute("finalProcess", processSelect);
             return "index/operatingSystemSelect";
         }
         String process_name = request.getParameter("process_name");
-        String[] oneStep = processSelect.split("\n");
+        String[] oneStep = processCreat.split("\n");
         for (int i = 0; i < oneStep.length; i++) {
-            String[] oneStep2=oneStep[i].split("\\:|,");
+            String[] oneStep2 = oneStep[i].split("\\:|,");
             for (int j = 0; j < oneStep2.length; j++) {
             }
             String feature_type = oneStep2[1];
@@ -208,48 +233,46 @@ public class KrryController {
             feature_number.add(Double.parseDouble(oneStep2[5].toString()));
             List<Double> base_plane_number = new ArrayList<Double>();
             base_plane_number.add(Double.parseDouble(oneStep2[7].toString()));
-            Double dimension_x ;
-            Double dimension_y ;
-            Double dimension_phi ;
-            Double dimension_h ;
-            Double machining_accuracy_mm ;
-            if(oneStep2[9].equals("")){
-                 dimension_x = 0.0;
+            Double dimension_x;
+            Double dimension_y;
+            Double dimension_phi;
+            Double dimension_h;
+            Double machining_accuracy_mm;
+            if (oneStep2[9].equals("")) {
+                dimension_x = 0.0;
+            } else {
+                dimension_x = Double.parseDouble(oneStep2[9].toString());
             }
-            else {
-                 dimension_x =  Double.parseDouble(oneStep2[9].toString());
+            if (oneStep2[11].equals("")) {
+                dimension_y = 0.0;
+            } else {
+                dimension_y = Double.parseDouble(oneStep2[11].toString());
             }
-            if(oneStep2[11].equals("")){
-                 dimension_y = 0.0;
+            if (oneStep2[13].equals("")) {
+                dimension_phi = 0.0;
+            } else {
+                dimension_phi = Double.parseDouble(oneStep2[13].toString());
             }
-            else {
-                 dimension_y =  Double.parseDouble(oneStep2[11].toString());
+            if (oneStep2[15].equals("")) {
+                dimension_h = 0.0;
+            } else {
+                dimension_h = Double.parseDouble(oneStep2[15].toString());
             }
-            if(oneStep2[13].equals("")){
-                 dimension_phi = 0.0;
-            }
-            else {
-                 dimension_phi =  Double.parseDouble(oneStep2[13].toString());
-            }
-            if(oneStep2[15].equals("")){
-                 dimension_h = 0.0;
-            }
-            else {
-                 dimension_h =  Double.parseDouble(oneStep2[15].toString());
-            }
-            if(oneStep2[17].equals("")){
-                 machining_accuracy_mm = 0.0;
-            }
-            else {
-                 machining_accuracy_mm =  Double.parseDouble(oneStep2[17].toString());
+            if (oneStep2[17].equals("")) {
+                machining_accuracy_mm = 0.0;
+            } else {
+                machining_accuracy_mm = Double.parseDouble(oneStep2[17].toString());
             }
             String surface_roughness_um = oneStep2[19];
             String dimension_M = "";
-            dimension dimension = new dimension(dimension_x, dimension_y,dimension_phi,dimension_h, dimension_M);
-            process finalProcess = new process(process_name, i,  feature_type,  process_type, feature_number,
-                    base_plane_number,  dimension, machining_accuracy_mm,surface_roughness_um);
-          //  System.out.println(process_name);
+            dimension dimension = new dimension(dimension_x, dimension_y, dimension_phi, dimension_h, dimension_M);
+            process finalProcess = new process(process_name, i, feature_type, process_type, feature_number,
+                    base_plane_number, dimension, machining_accuracy_mm, surface_roughness_um);
+            //  System.out.println(process_name);
+            //将新创建的工艺存入数据库
             userDao.saveOrUpdateUser(finalProcess);
+
+            request.getSession().setAttribute("finalProcess", process_name);
 
         }
 
@@ -262,41 +285,44 @@ public class KrryController {
      * 选择工艺,读取所有机床信息，得到其中所有的操作系统
      * com.krry.controller.processSelect
      * 方法名：processSelect
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.GET,value="/gotooperatingSystemSelect")
-    public String gotooperatingSystemSelect(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.GET, value = "/gotooperatingSystemSelect")
+    public String gotooperatingSystemSelect(HttpServletRequest request) {
         return "index/operatingSystemSelect";
-        }
+    }
 
     /**
      * 选择操作系统,并载入所有MES系统
      * com.krry.controller.operatingSystem
      * 方法名：operatingSystem
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/mesSelect")
-    public String operatingSystem(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.POST, value = "/mesSelect")
+    public String operatingSystem(HttpServletRequest request) {
 
         List<String> operatingSystem = Arrays.asList(request.getParameterValues("operatingSystem"));
 
-        request.getSession().setAttribute("operatingSystem",operatingSystem );
+        request.getSession().setAttribute("finalOperatingSystem", operatingSystem);
 
-        List<String> allControlCell = new ArrayList();;
+        List<String> allControlCell = new ArrayList();
+
         List<control_cell> control_cell = userDao.get_control_cell();
-        for(int i = 0; i < control_cell.size(); i++){
+        for (int i = 0; i < control_cell.size(); i++) {
             String controlCell = control_cell.get(i).getName();
-            allControlCell.add(i,controlCell);
+            allControlCell.add(i, controlCell);
         }
-        request.getSession().setAttribute("allControlCell",allControlCell );
+        request.getSession().setAttribute("allControlCell", allControlCell);
         return "index/mesSelect";
     }
 
@@ -304,57 +330,64 @@ public class KrryController {
      * 其他需求
      * com.krry.controller.otherRequest
      * 方法名：otherRequest
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.POST,value="/otherRequest")
-    public String otherRequest(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.POST, value = "/otherRequest")
+    public String otherRequest(HttpServletRequest request) {
         return "index/otherRequest";
-    }
-    /**
-     * 其他需求
-     * com.krry.controller.otherRequest
-     * 方法名：otherRequest
-     * @author kunkun
-     * @param request
-     * @return string
-     * @exception
-     * @since  1.0.0
-     */
-    @RequestMapping(method=RequestMethod.POST,value="/success")
-    public String success(HttpServletRequest request){
-        return "index/success";
     }
 
     /**
      * 其他需求
+     * com.krry.controller.otherRequest
+     * 方法名：otherRequest
+     *
+     * @param request
+     * @return string
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/success")
+    public String success(HttpServletRequest request) {
+        //目前SESSION域内已有内容：
+        return "index/success";
+    }
+
+    /**
+     * 前往工艺创建页面
      * com.krry.controller.processCreat
      * 方法名：otherRequest
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.GET,value="/processCreat")
-    public String processCreat(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.GET, value = "/processCreat")
+    public String processCreat(HttpServletRequest request) {
         return "index/processCreat";
     }
+
     /**
-     * 其他需求
+     * 前往工艺选择页面
      * com.krry.controller.processSelect2
      * 方法名：otherRequest
-     * @author kunkun
+     *
      * @param request
      * @return string
-     * @exception
-     * @since  1.0.0
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
      */
-    @RequestMapping(method=RequestMethod.GET,value="/processSelect2")
-    public String processSelect2(HttpServletRequest request){
+    @RequestMapping(method = RequestMethod.GET, value = "/processSelect2")
+    public String processSelect2(HttpServletRequest request) {
         return "index/process";
     }
 

@@ -1,5 +1,4 @@
-
-<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8" %>
 <%@ page import="com.i4tp.entity.material_type" %>
 <%@ page import="com.i4tp.entity.Part" %>
 <%@include file="../common/common.jsp" %>
@@ -16,7 +15,7 @@
 
     <%
         String cssPath = request.getContextPath();
-        String cssBasePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+        String cssBasePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
     %>
     <meta name="viewport" content="width=1200">
     <link href="<%=cssPath%>/files/bc.css" rel="stylesheet">
@@ -30,7 +29,7 @@
 
 <div id="hd0">
     <div class="mod-head clearfix">
-        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO" ></h1>
+        <h1 id="logo"><img src="../../../files/logo.png" alt="LOGO"></h1>
         <div id="nav">
             <ul>
                 <li><a href="${basePath}/index/index">I4TP 系统配置与重构平台</a></li>
@@ -49,7 +48,7 @@
 
             <div class="mod-set-nav">
                 <ul class="clearfix li-5">
-                    <li >
+                    <li>
                         <a href="${basePath}/index/gotoProduct">
                             <i class="ico ico-1"></i>
                             <span>产品参数</span>
@@ -67,7 +66,7 @@
                             <span>操作系统选择</span>
                         </a>
                     </li>
-                    <li >
+                    <li>
                         <a href="${basePath}/index/mesSelect">
                             <i class="ico ico-4"></i>
                             <span>MES选择</span>
@@ -96,41 +95,45 @@
 
         </div>
     </div>
-<div id="bd" style="height: 600px;width: 800px">
+    <div id="bd" style="height: 600px;width: 800px">
 
-    <form id="success" action="${basePath}/index/index">
-        <textarea id="p_inf" name="p_inf" style="margin-top:20px;border-style: solid;border-radius:10px;width: 800px;height: 500px;"></textarea>
-    </form>
+        <form id="success" action="${basePath}/index/index">
+            <textarea id="p_inf" name="p_inf"
+                      style="margin-top:20px;border-style: solid;border-radius:10px;width: 800px;height: 500px;"></textarea>
+        </form>
 
-    <div style="margin-top:15px;text-align: center;"><button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
-        <span>返回首页</span></button></div>
+        <div style="margin-top:15px;text-align: center;">
+            <button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
+                <span>返回首页</span></button>
+        </div>
 
 
+    </div>
 </div>
-</div>
 
-<script type="text/javascript" >
+<script type="text/javascript">
 </script>
 
 </body>
 </html>
 
 
-
 <%--提交--%>
-<script type="text/javascript" >
+<script type="text/javascript">
     function doSubmitForm() {
-        if(0)
+        if (0)
             alert("error!");
         else
             document.getElementById("success").submit();
     }
+
     //init method one
-    jQuery(function($){
+    jQuery(function ($) {
         init("初始化方法进入三");
     });
-    function init(){
-        var inf= "${sessionScope}";
+
+    function init() {
+        var inf = "${sessionScope}";
         console.log(inf);
         $("#p_inf").val(inf);
         // 初始化内容

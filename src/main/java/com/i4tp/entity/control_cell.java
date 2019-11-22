@@ -1,23 +1,19 @@
-
 package com.i4tp.entity;
 
-        import org.springframework.data.annotation.Id;
-        import org.springframework.data.mongodb.core.mapping.Document;
-        import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-        import java.util.List;
+import java.util.List;
 
 
 /**
+ * @author krry
+ * @version 1.0.0
  * @Document(collection = "user")这个注解和Hibernate的注解Entiry非常相似，
  * 就是定义一个文档，对象MongoDB存储的Collection（表）的名称是user
  * @Id指该字段是主键，不能缺少
- * @Field("username")指该字段映射MongoDB的实际字段，如果一致可以省略、
- *
- * User
- * @author krry
- * @version 1.0.0
- *
+ * @Field("username")指该字段映射MongoDB的实际字段，如果一致可以省略、 User
  */
 @Document(collection = "control_cell")
 public class control_cell {
