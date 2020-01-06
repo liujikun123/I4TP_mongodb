@@ -15,26 +15,18 @@
 
     <%
         String cssPath = request.getContextPath();
-        String resourcePath = request.getContextPath() + "/resource";
-        String cssBasePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-    %>
+        %>
     <meta name="viewport" content="width=1200">
     <link href="<%=cssPath%>/files/bc.css" rel="stylesheet">
     <link href="<%=cssPath%>/files/wifi.css" rel="stylesheet">
-    <script src="<%=resourcePath%>/js/Three.js"></script>
-    <script src="<%=resourcePath%>/js/STLLoader.js"></script>
-    <script src="<%=resourcePath%>/js/OrbitControls.js"></script>
-    <script src="<%=resourcePath%>/js/stats.min.js"></script>
-    <script src="<%=resourcePath%>/js/dat.gui.min.js"></script>
-    <script src="<%=resourcePath%>/js/Detector.js"></script>
-    <script src="<%=resourcePath%>/js/Stats.js"></script>
-    <script src="<%=resourcePath%>/js/THREEx.KeyboardState.js"></script>
-    <script src="<%=resourcePath%>/js/THREEx.FullScreen.js"></script>
-    <script src="<%=resourcePath%>/js/THREEx.WindowResize.js"></script>
-    <%--  <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>--%>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-    <style type="text/css">
-    </style>
+    <script src="<%=cssPath%>/resource/js/three-r93.js"></script>
+    <script src="<%=cssPath%>/resource/js/Detector.js"></script>
+    <script src="<%=cssPath%>/resource/js/GLTFLoader.js"></script>
+    <script src="<%=cssPath%>/resource/js/OrbitControls.js"></script>
+    <script src="<%=cssPath%>/resource/js/stats.min.js"></script>
+    <script src="<%=cssPath%>/resource/js/dat.gui.min.js"></script>
 </head>
 <body>
 <div id="hd0">
@@ -47,7 +39,7 @@
 
         </div>
         <div id="userbar">
-            <img src="../../../files/amtc.png" alt="amtc">
+            <img src="<%=cssPath%>/files/amtc.png" alt="amtc">
         </div>
     </div>
 </div>
@@ -108,6 +100,13 @@
 
     <div id="bd" style="height:auto;width: 800px;text-align: center">
         <br>
+        <form action="${basePath}/index/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <input type="submit" value="提交">
+        </form>
+
+
+
 
         <div>
             <a>欢迎使用交钥匙工厂生产系统配置与重构平台</a><br><br><br>
@@ -115,19 +114,174 @@
         </div>
 
         <div>
-            <div style="margin-bottom:15px;">
-                <button type="button" class="btn btn-primary btn-l" onclick=gotoTest()><span>测试按钮</span></button>
-            </div>
-            <br>
+<%--            <div style="margin-bottom:15px;">--%>
+<%--                <button type="button" class="btn btn-primary btn-l" onclick=gotoTest()><span>测试按钮</span></button>--%>
+<%--            </div>--%>
+<%--            <br>--%>
             <div style="margin-bottom:15px;">
                 <button type="button" class="btn btn-primary btn-l" onclick=gotoProduct()><span>开始使用</span></button>
             </div>
         </div>
+        <div style="padding: 20px 20px 20px;width: 750px">
+            <div id="ThreeJS" ></div>
+        </div>
     </div>
 </div>
 </body>
+<script>
 
-<script type="text/javascript">
+    let scene, camera, renderer, controls, guiControls,container;
+    let stats = initStats();
+
+    /* 场景 */
+    function initScene() {
+
+        scene = new THREE.Scene();
+
+    }
+
+    /* 相机 */
+    function initCamera() {
+
+        camera = new THREE.PerspectiveCamera(45, 750 / 450, 0.1, 10000);
+        // camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
+        camera.position.set(100, 100, 100);
+        camera.lookAt(new THREE.Vector3(0, 0, -100));
+
+    }
+
+    /* 渲染器 */
+    function initRender() {
+
+        renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setSize(750, 450);
+        renderer.setClearColor(0x0E3866);
+        // renderer.shadowMapEnabled = true;
+        // renderer.shadowMapType=THREE.PCFSoftShadowMap;
+        // container = document.getElementById("ThreeJS");
+        document.getElementById("ThreeJS").appendChild(renderer.domElement);
+
+    }
+
+    /* 灯光 */
+    function initLight() {
+
+        scene.add(new THREE.AmbientLight(0xffffff));
+
+    }
+
+    // FLOOR
+    function initFloor() {
+
+        let floorTexture = new THREE.ImageUtils.loadTexture( "<%=cssPath%>/resource/img/1.jpg" );
+        floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+        floorTexture.repeat.set( 10, 10 );
+        let floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+        let floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
+        let floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.position.y = -0.5;
+        floor.rotation.x = Math.PI / 2;
+        scene.add(floor);
+
+    }
+    /* 控制器 */
+    function initControls() {
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+        /* 属性参数默认 */
+
+    }
+
+    /* 调试插件 */
+    function initGui() {
+
+        guiControls = new function () {
+
+        };
+
+        let controls = new dat.GUI({width: 200});
+
+    }
+
+    /* 场景中的内容 */
+    function initContent() {
+
+        // 加载 glTF 格式的模型
+        let loader = new THREE.GLTFLoader();/*实例化加载器*/
+
+        loader.load("<%=cssPath%>/resource/model/amtc1.glb",function (obj) {
+            obj.scene.position.x = -1000;
+            obj.scene.position.y = -1000;
+            obj.scene.position.z = 0;
+            scene.add(obj.scene);
+        });
+
+    }
+
+    /* 性能插件 */
+    function initStats() {
+
+        let stats = new Stats();
+
+        // document.getElementById("ThreeJS").appendChild(stats.domElement);
+
+        return stats;
+
+    }
+
+    /* 窗口变动触发 */
+    function onWindowResize() {
+
+        // camera.aspect = window.innerWidth / window.innerHeight;
+        // camera.updateProjectionMatrix();
+        // renderer.setSize(window.innerWidth, window.innerHeight);
+
+    }
+
+    /* 数据更新 */
+    function update() {
+
+        stats.update();
+
+    }
+
+    /* 初始化 */
+    function init() {
+
+        initScene();
+        initCamera();
+        initRender();
+        initLight();
+        // initFloor();
+        initControls();
+        initContent();
+        // initGui();
+
+        /* 监听事件 */
+        window.addEventListener('resize', onWindowResize, false);
+
+    }
+
+    /* 循环渲染 */
+    function animate() {
+
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+        update();
+
+    }
+
+    /* 初始加载 */
+    (function () {
+        console.log("three init start...");
+
+        init();
+        animate();
+
+        console.log("three init send...");
+    })();
+
     function gotoProduct() {
         window.location.href = "${basePath}/index/gotoProduct";
     }
@@ -135,126 +289,5 @@
     function gotoTest() {
         window.location.href = "${basePath}/index/gotoTest";
     }
-
-    /*
-        Three.js "tutorials by example"
-        Author: Lee Stemkoski
-        Date: July 2013 (three.js v59dev)
-    */
-
-    // MAIN
-
-    // standard global variables
-    <%--var container, scene, camera, renderer, controls, stats;--%>
-    <%--var keyboard = new THREEx.KeyboardState();--%>
-    <%--var clock = new THREE.Clock();--%>
-
-    <%--// custom global variables--%>
-    <%--var android;--%>
-
-    <%--init();--%>
-    <%--animate();--%>
-
-    <%--// FUNCTIONS--%>
-    <%--function init()--%>
-    <%--{--%>
-    <%--  // SCENE--%>
-    <%--  scene = new THREE.Scene();--%>
-    <%--  // CAMERA--%>
-    <%--  var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;--%>
-    <%--  var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;--%>
-    <%--  camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);--%>
-    <%--  scene.add(camera);--%>
-    <%--  camera.position.set(0,150,400);--%>
-    <%--  camera.lookAt(scene.position);--%>
-    <%--  // RENDERER--%>
-    <%--  if ( Detector.webgl )--%>
-    <%--    renderer = new THREE.WebGLRenderer( {antialias:true} );--%>
-    <%--  else--%>
-    <%--    renderer = new THREE.CanvasRenderer();--%>
-    <%--  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);--%>
-    <%--  container = document.getElementById( 'model' );--%>
-    <%--  container.appendChild( renderer.domElement );--%>
-    <%--  // EVENTS--%>
-    <%--  THREEx.WindowResize(renderer, camera);--%>
-    <%--  THREEx.FullScreen.bindKey({ charCode : 'm'.charCodeAt(0) });--%>
-    <%--  // CONTROLS--%>
-    <%--  controls = new THREE.OrbitControls( camera, renderer.domElement );--%>
-    <%--  // STATS--%>
-    <%--  stats = new Stats();--%>
-    <%--  stats.domElement.style.position = 'absolute';--%>
-    <%--  stats.domElement.style.bottom = '0px';--%>
-    <%--  stats.domElement.style.zIndex = "100";--%>
-    <%--  container.appendChild( stats.domElement );--%>
-    <%--  // LIGHT--%>
-    <%--  var light = new THREE.PointLight(0xffffff);--%>
-    <%--  light.position.set(-100,200,100);--%>
-    <%--  scene.add(light);--%>
-    <%--  // FLOOR--%>
-    <%--  var floorTexture = new THREE.ImageUtils.loadTexture( '<%=cssPath%>/images/1.jpg' );--%>
-    <%--  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;--%>
-    <%--  floorTexture.repeat.set( 10, 10 );--%>
-    <%--  var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );--%>
-    <%--  var floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);--%>
-    <%--  var floor = new THREE.Mesh(floorGeometry, floorMaterial);--%>
-    <%--  floor.position.y = -0.5;--%>
-    <%--  floor.rotation.x = Math.PI / 2;--%>
-    <%--  scene.add(floor);--%>
-    <%--  // SKYBOX/FOG--%>
-    <%--  var skyBoxGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );--%>
-    <%--  var skyBoxMaterial = new THREE.MeshBasicMaterial( { color: 0x9999ff, side: THREE.BackSide } );--%>
-    <%--  var skyBox = new THREE.Mesh( skyBoxGeometry, skyBoxMaterial );--%>
-    <%--  // scene.add(skyBox);--%>
-    <%--  scene.fog = new THREE.FogExp2( 0x9999ff, 0.00025 );--%>
-
-    <%--  ////////////--%>
-    <%--  // CUSTOM //--%>
-    <%--  ////////////--%>
-
-    <%--  // Note: if imported model appears too dark,--%>
-    <%--  //   add an ambient light in this file--%>
-    <%--  //   and increase values in model's exported .js file--%>
-    <%--  //    to e.g. "colorAmbient" : [0.75, 0.75, 0.75]--%>
-    <%--  var jsonLoader = new THREE.STLLoader();--%>
-    <%--  jsonLoader.load("<%=cssPath%>/images/1.stl", function(geometry){--%>
-    <%--  var mat = new THREE.MeshLambertMaterial({color: 0x00ffff});--%>
-    <%--  var mesh = new THREE.Mesh(geometry, mat);--%>
-    <%--  mesh.rotation.x = -0.5 * Math.PI; //将模型摆正--%>
-    <%--  mesh.scale.set(0.1, 0.1, 0.1); //缩放--%>
-    <%--  geometry.center(); //居中显示--%>
-    <%--  scene.add(mesh);--%>
-    <%--});--%>
-    <%--  // addModelToScene function is called back after model has loaded--%>
-
-    <%--  var ambientLight = new THREE.AmbientLight(0x111111);--%>
-    <%--  scene.add(ambientLight);--%>
-
-    <%--}--%>
-
-
-    <%--function animate()--%>
-    <%--{--%>
-    <%--  requestAnimationFrame( animate );--%>
-    <%--  render();--%>
-    <%--  update();--%>
-    <%--}--%>
-
-    <%--function update()--%>
-    <%--{--%>
-    <%--  if ( keyboard.pressed("z") )--%>
-    <%--  {--%>
-    <%--    // do something--%>
-    <%--  }--%>
-
-    <%--  controls.update();--%>
-    <%--  stats.update();--%>
-    <%--}--%>
-
-    <%--function render()--%>
-    <%--{--%>
-    <%--  renderer.render( scene, camera );--%>
-    <%--}--%>
-
-
 </script>
 </html>

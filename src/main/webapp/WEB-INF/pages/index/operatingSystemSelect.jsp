@@ -113,7 +113,7 @@
 
                 for (String typeVo : ls) {%>
 
-            <input type="checkbox" name="operatingSystem" value=<%=typeVo.replace(" ", "")%>> <%=typeVo %> <br>
+            <input type="checkbox" name="operatingSystem" value=<%=typeVo.replace(" ", "-")%>> <%=typeVo %> <br>
             <%
                 }
             %>

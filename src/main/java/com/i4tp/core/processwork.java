@@ -2,8 +2,7 @@ package com.i4tp.core;
 
 import com.i4tp.entity.*;
 
-import java.util.Optional;
-
+//遗传算法估算工作量
 public class processwork {
     public double work(process process) {
         Double work;

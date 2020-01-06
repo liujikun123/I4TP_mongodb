@@ -101,8 +101,8 @@
         <br>
 
         <form id="otherRequest" action="${basePath}/index/success" method="post">
-            <div class="inputName" id="pNum" name="pNum"> 月产量：</div>
-            <input type="text" name="part_x" class="input"/><br>
+            <div class="inputName" > 月产量：</div>
+            <input type="text" name="pNum" id="pNum" class="input"/><br>
         </form>
 
         <div style="margin-top:15px;">
@@ -124,8 +124,8 @@
 <%--提交--%>
 <script type="text/javascript">
     function doSubmitForm() {
-        if (0)
-            alert("error!");
+        if (document.getElementById("pNum").value=="")
+            alert("不能为空");
         else
             document.getElementById("otherRequest").submit();
     }

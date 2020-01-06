@@ -47,7 +47,7 @@ public class GA {
         return fitValue;
     }
 
-    public void main(List<manufacturing_cell> manufacturing,
+    public GAResult main(List<manufacturing_cell> manufacturing,
                      List<process> allProcess,
                      List<process_type> allType,
                      int productsNum2) {
@@ -55,6 +55,10 @@ public class GA {
         Map<String, Double> allpFactor = new HashMap<>();
         Map<String, Double> allmFactor = new HashMap<>();
         Map<String, Double> alltFactor = new HashMap<>();
+        timeByMachine.clear();
+        processName.clear();
+        solveSpace.clear();
+        nameOfSolveSpace.clear();
         //工艺系数初始化
         for (com.i4tp.entity.process_type process_type : allType) {
             allpFactor.put(process_type.getProcess_type(), process_type.getpFactor());
@@ -85,8 +89,8 @@ public class GA {
             }
         }
 
-        System.out.println(processName);
-        System.out.println(nameOfSolveSpace);
+//        System.out.println(processName);
+//        System.out.println(nameOfSolveSpace);
         //计算所有工艺在不同机床上不同的加工时间
         for (int i = 0; i < processName.size(); i++) {
             double work = new processwork().work(allProcess.get(i));
@@ -102,9 +106,9 @@ public class GA {
         }
 //
 ////
-        System.out.println(timeByMachine);
+//        System.out.println(timeByMachine);
         //定义基因型和初始种群
-        Genotype<IntegerGene> gtf = Genotype.of(IntegerChromosome.of(0, 3, geneLength));
+        Genotype<IntegerGene> gtf = Genotype.of(IntegerChromosome.of(0, 1, geneLength));
 //        System.out.println(gtf);
 
         // 3.)创建Engine
@@ -134,12 +138,13 @@ public class GA {
                 .peek(statistics)//保存统计数据
                 .collect(EvolutionResult.toBestPhenotype());
 //
-        System.out.println(statistics);
-        System.out.println(result);
-        timeByMachine.clear();
-        processName.clear();
-        solveSpace.clear();
-        nameOfSolveSpace.clear();
+//        System.out.println(statistics);
+//        System.out.println("result:");
+//        System.out.println(result.getGenotype().getChromosome());
+//        System.out.println(result);
+        //        System.out.println(GAResult.toString());
+
+        return new GAResult(result,processName,nameOfSolveSpace);
 
     }
 }

@@ -1,25 +1,34 @@
 package com.i4tp.controller;
 
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.i4tp.core.GA;
-import com.i4tp.entity.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.util.*;
-
+import com.i4tp.core.GAResult;
+import com.i4tp.dao.FileDao;
 import com.i4tp.dao.IUserDao;
+import com.i4tp.entity.*;
+import io.jenetics.Chromosome;
+import io.jenetics.IntegerGene;
+import org.bson.types.Binary;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Controller层，作为请求转发
  * 页面所有路径的访问方法:控制层的命名空间+@RequestMapping的value
  */
 @Controller
+
 @RequestMapping("/index")
 public class KrryController {
 
@@ -28,6 +37,53 @@ public class KrryController {
 
     public KrryController() {
     }
+    @RequestMapping(value="/upload")
+    public Object handleFileUpload(@RequestParam("file") MultipartFile file) {
+        System.out.println("************");
+        try {
+            String name = file.getOriginalFilename();
+            System.out.println(name);
+            String ContentType =  file.getContentType();
+            System.out.println(ContentType);
+            long size = file.getSize();
+            System.out.println(size);
+            Binary Content =  new Binary(file.getBytes());
+            System.out.println(Content.toString());
+
+//            File f = new File(file.getOriginalFilename(), file.getContentType(), file.getSize(),
+//                    new Binary(file.getBytes()));
+            File f = new File(name,ContentType,size,Content);
+            System.out.println(f.toString());
+            userDao.saveOrUpdateUser(f);
+            System.out.println("666");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return "index/index";
+    }
+
+//
+//    /**
+//     * 获取文件片信息
+//     *
+//     * @param id
+//     * @return
+//     * @throws UnsupportedEncodingException
+//     */
+//    @GetMapping("files/{id}")
+//    @ResponseBody
+//    public ResponseEntity<Object> serveFile(@PathVariable String id) throws UnsupportedEncodingException {
+//
+//        //Optional<File> file = fileService.getFileById(id);
+//        System.out.println("******************"+id+"******************");
+//        File file = fileDao.find(id);
+//
+//        return ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; fileName=" + new String(file.getName().getBytes("utf-8"),"ISO-8859-1"))
+//                .header(HttpHeaders.CONTENT_TYPE, "application/octet-stream")
+//                .header(HttpHeaders.CONTENT_LENGTH, file.getSize() + "").header("Connection", "close")
+//                .body(file.getContent().getData());
+//    }
 
     /**
      * 进入首页
@@ -36,10 +92,6 @@ public class KrryController {
      */
     @RequestMapping(value = "/index")
     public String index() {
-//            double p = 2;
-//            Object[] result1 = proxy.returningFeval("demo",1,p);//这里有很多参数，仅保留部分参数供大家理解用。proxy.returningFeva方法是执行m文件。
-//            double[] r=(double[]) result1[0];
-//            System.out.println(r[0]);
 
         return "index/index";   //默认是转发，不会显示转发路径
     }
@@ -49,15 +101,10 @@ public class KrryController {
      *
      * @return
      */
-    @RequestMapping(value = "/gotoTest")
+    @RequestMapping(value = "/gotoTest", method=RequestMethod.GET)
     public String test() {
-        List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
-        List<process_type> allProcessType = userDao.get_allProcess_type();
-        List<process> allProcess = userDao.findByName("valve_block_process");
-        GA testA = new GA();
-        int productsNum = 1000;
-        testA.main(manufacturing, allProcess, allProcessType, productsNum);
-        return "index/index";
+
+        return "index/Test";
     }
 
     /**
@@ -126,7 +173,14 @@ public class KrryController {
         // System.out.println(newPart.getId().length());
         String process = newPart.getProcess();
         request.getSession().setAttribute("process", process);
-        return "index/process";
+        //   System.out.println(product.substring(3, 27).length());
+        Part selectProduct = userDao.findById(newPart.getId());
+        String productName = selectProduct.getPartName();
+        List<process_type> allProcessType = userDao.findAllProcessType();
+        List<product_feature_type> allFeatureType = userDao.findAllFeatureType();
+        request.getSession().setAttribute("allProcessType", allProcessType);
+        request.getSession().setAttribute("allFeatureType", allFeatureType);
+        return "index/processCreat";
     }
 
 
@@ -186,6 +240,37 @@ public class KrryController {
     }
 
     /**
+     * 前往工艺创建页面
+     * com.krry.controller.processCreat
+     * 方法名：otherRequest
+     *
+     * @param request
+     * @return string
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/processCreat")
+    public String processCreat(HttpServletRequest request) {
+        return "index/processCreat";
+    }
+
+    /**
+     * 前往工艺选择页面
+     * com.krry.controller.processSelect2
+     * 方法名：otherRequest
+     *
+     * @param request
+     * @return string
+     * @throws
+     * @author kunkun
+     * @since 1.0.0
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/processSelect2")
+    public String processSelect2(HttpServletRequest request) {
+        return "index/process";
+    }
+    /**
      * 选择工艺,读取所有机床信息，得到其中所有的操作系统
      * com.krry.controller.processSelect
      * 方法名：processSelect
@@ -200,14 +285,11 @@ public class KrryController {
     public String processSelect(HttpServletRequest request) {
 //        创建的工艺
 
-        request.getSession().removeAttribute("process");
-        request.getSession().removeAttribute("allProcessType");
-        request.getSession().removeAttribute("allFeatureType");
         String processCreat = request.getParameter("p_inf");
 
         request.getSession().removeAttribute("p_inf");
 //        选择的工艺名称
-        String processSelect = request.getParameter("processSelect");
+        String processSelect = request.getParameter("processName");
         request.getSession().removeAttribute("processSelect");
         List<String> allOperatingSystem = new ArrayList();
         List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
@@ -312,6 +394,7 @@ public class KrryController {
     public String operatingSystem(HttpServletRequest request) {
 
         List<String> operatingSystem = Arrays.asList(request.getParameterValues("operatingSystem"));
+//        System.out.println(operatingSystem);
 
         request.getSession().setAttribute("finalOperatingSystem", operatingSystem);
 
@@ -355,14 +438,27 @@ public class KrryController {
      */
     @RequestMapping(method = RequestMethod.POST, value = "/success")
     public String success(HttpServletRequest request) {
-        //目前SESSION域内已有内容：
+        //SESSION域内已有内容：
+//        process:当前工艺所有细节
+//        allProcessType：所有加工类型
+//        allOperatingSystem：所有加工系统
+//        allControlCell：所有控制系统
+//        allFeatureType：所有的工艺类型
+//        finalProcess：选的加工工艺名字
+//        finalProductName：选的零件名字
+//        finalOperatingSystem：选的操作系统
+//        productId：选的零件ID
+//        pNum:需求产量
+
+        String pNum = request.getParameter("pNum");
+        request.getSession().setAttribute("pNum", pNum);
         return "index/success";
     }
 
     /**
-     * 前往工艺创建页面
-     * com.krry.controller.processCreat
-     * 方法名：otherRequest
+     * 其他需求
+     * com.krry.controller.result
+     * 方法名：result
      *
      * @param request
      * @return string
@@ -370,25 +466,43 @@ public class KrryController {
      * @author kunkun
      * @since 1.0.0
      */
-    @RequestMapping(method = RequestMethod.GET, value = "/processCreat")
-    public String processCreat(HttpServletRequest request) {
-        return "index/processCreat";
-    }
+    @RequestMapping(method = RequestMethod.POST, value = "/result")
+    public String result(HttpServletRequest request) {
+        //配置输入参数从SESSION域中读取
+        List<manufacturing_cell> manufacturing = userDao.get_alleManufacturingCell();
+        List<process_type> allProcessType = userDao.get_allProcess_type();
+        String finalProcess = request.getSession().getAttribute("finalProcess").toString();
+        List<process> allProcess = userDao.findByName(finalProcess);
+        int productsNum = Integer.parseInt(request.getSession().getAttribute("pNum").toString());
+//
+        GA testA = new GA();
+        GAResult result = testA.main(manufacturing, allProcess, allProcessType, productsNum);
 
-    /**
-     * 前往工艺选择页面
-     * com.krry.controller.processSelect2
-     * 方法名：otherRequest
-     *
-     * @param request
-     * @return string
-     * @throws
-     * @author kunkun
-     * @since 1.0.0
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/processSelect2")
-    public String processSelect2(HttpServletRequest request) {
-        return "index/process";
+        Chromosome<IntegerGene> macnineNum = result.getResult().getGenotype().getChromosome();
+
+        List<String> processName = result.getProcessName();
+
+        List<List<String>> machineName = result.getNameOfSolveSpace();
+
+        List<String> strResult = new ArrayList<>();
+        int num = 0;
+        for(int i = 0;i<processName.size();i++){
+            StringBuilder _result = new StringBuilder("第" + (i + 1) + "项加工项目为:" + processName.get(i) + ",使用的机床为:");
+            for (int j =0;j<machineName.get(i).size();j++){
+                if(macnineNum.getGene(num).intValue() != 0){
+                    _result.append(macnineNum.getGene(num).intValue()).append("台").append(machineName.get(i).get(j)).append(",");
+                }
+                num++;
+            }
+            _result.deleteCharAt(_result.length()-1);
+            _result.append(";");
+            strResult.add(_result.toString());
+        }
+//        System.out.println(strResult);
+
+        request.getSession().setAttribute("strResult", strResult);
+
+        return "index/result";
     }
 
 }

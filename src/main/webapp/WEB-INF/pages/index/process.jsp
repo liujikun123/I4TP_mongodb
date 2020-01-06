@@ -165,8 +165,11 @@
                             List<process> ls = (List<process>) request.getSession().getAttribute("process");
 
                             if (ls.size() != 0) {%>
-                        <option value="<%=ls%>"><%=ls.get(0).getName() %>
+                        <option id="nProcess" name="nProcess" value="<%=ls%>"><%=ls.get(0).getName() %>
                         </option>
+
+                        <input type='text' name='processName' value=<%=ls.get(0).getName()%> hidden>
+
                         <%
                             }
                         %>
@@ -186,7 +189,7 @@
                     <div style="padding:5px 10px 20px;">
                         <p style="font-size:150%;text-align:center;">工艺信息</p>
 
-                <textarea id="p_inf2" style="border-style: none;width: 380px;height: 300px;">
+                <textarea id="p_inf2" style="border-style: none;width: 380px;height: 300px;color: #114d89">
                 </textarea>
 
                     </div>
@@ -219,6 +222,7 @@
         if (0)
             alert("error!");
         else
+            // sessionStorage.setItem("finalProcess", $("#nProcess").val());
             document.getElementById("process").submit();
     }
 

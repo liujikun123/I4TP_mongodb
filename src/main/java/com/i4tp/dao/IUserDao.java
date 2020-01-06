@@ -33,6 +33,7 @@ public interface IUserDao {
     public void saveOrUpdateUser(Part Part);
 
     public void saveOrUpdateUser(process process);
+    public void saveOrUpdateUser(File file);
 
 
     /**

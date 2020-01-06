@@ -42,12 +42,17 @@ public class UserDaoImpl implements IUserDao {
 
     public void saveOrUpdateUser(Part Part) {
 
+//        System.out.println(Part.toString());
         mongoTemplate.save(Part, "products");
     }
 
     public void saveOrUpdateUser(process process) {
 
         mongoTemplate.save(process, "process");
+    }
+    public void saveOrUpdateUser(File file) {
+
+        mongoTemplate.save(file, "img");
     }
 
     public void saveManufacturingCell(manufacturing_cell mc) {

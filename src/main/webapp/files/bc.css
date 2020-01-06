@@ -65,7 +65,7 @@ input, button, textarea, select {
     line-height: 1.2
 }
 
-a img, img {
+a img, img textarea {
     -ms-interpolation-mode: bicubic
 }
 
@@ -152,17 +152,17 @@ body {
     color: #333
 }
 
-a {
+a textarea {
     color: #333;
     text-decoration: none
 }
 
-a:hover {
+a textarea:hover {
     color: #0063c8;
     text-decoration: underline
 }
 
-a.em {
+a textarea.em {
     color: #0063c8
 }
 
@@ -199,7 +199,7 @@ em.em {
     text-decoration: none
 }
 
-a.btn {
+a textarea.btn {
     text-decoration: none !important
 }
 

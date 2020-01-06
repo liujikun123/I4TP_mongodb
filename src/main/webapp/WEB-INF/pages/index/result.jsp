@@ -105,13 +105,13 @@
                             <span>用户需求</span>
                         </a>
                     </li>
-                    <li class="active">
-                        <a>
+                    <li >
+                        <a href="${basePath}/index/success">
                             <i class="ico ico-6"></i>
                             <span>明细浏览</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a>
                             <i class="ico ico-7"></i>
                             <span>配置生成</span>
@@ -122,39 +122,33 @@
 
         </div>
     </div>
-    <div id="bd" style="height: 600px;width: 800px">
+    <div id="bd" style="height: auto;width: 800px">
 
-        <form id="success" action="${basePath}/index/result" method="post">
+        <form id="success" action="${basePath}/index/index">
 
             <div style="padding: 20px">
 
-                <div class="inputName"> 零件名称：</div>
-                <a id="partName"  ></a><br>
 
-                <div class="inputName"> 工艺名称：</div>
-                <a id="processName"></a><br>
+                <div class="inputName">
+                    <p style="font-size:150%;text-align:center;">配置方案</p>
+                </div>
+                <div style="padding: 20px 20px 20px;">
+                <textarea id="result" style="border-style: none;width: 650px;height: 300px;color: #114d89;line-height: 150%">
+                </textarea>
+                </div>
 
-                <div class="inputName"> 产量要求：</div>
-                <a id="pNum" ></a><br>
-
-                <div class="inputName"> 可用操作系统：</div>
-                <pre id="machines" ></pre><br>
 
             </div>
         </form>
 
         <div style="margin-top:15px;text-align: center;">
             <button type="button" class="btn btn-primary btn-l" onclick=doSubmitForm()>
-                <span>下一步</span></button>
+                <span>返回首页</span></button>
         </div>
 
 
     </div>
 </div>
-
-<script type="text/javascript">
-</script>
-
 </body>
 </html>
 
@@ -174,14 +168,10 @@
     });
 
     function init() {
-        var partName = "${sessionScope.finalProductName}";
-        $("#partName").text(partName);
-        var processName = "${sessionScope.finalProcess}";
-        $("#processName").text(processName);
-        var pNum =  "${sessionScope.pNum}";
-        $("#pNum").text(pNum);
-        var machines = "${sessionScope.finalOperatingSystem}";
-        $("#machines").text(machines);
+        const result = "${sessionScope.strResult}";
+        const result2 = result.replace("["," ").replace("]","").replace(/;,/g,";\n");
+        console.log(result2);
+        $("#result").text(result2);
         // console.log(machines);
         // 初始化内容
     }
