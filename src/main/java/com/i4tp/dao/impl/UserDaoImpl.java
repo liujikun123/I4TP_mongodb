@@ -6,8 +6,15 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-import com.i4tp.dao.IUserDao;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -23,7 +30,7 @@ import java.util.List;
  * @author
  */
 @Repository
-public class UserDaoImpl implements IUserDao {
+public class UserDaoImpl {
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -50,7 +57,7 @@ public class UserDaoImpl implements IUserDao {
 
         mongoTemplate.save(process, "process");
     }
-    public void saveOrUpdateUser(File file) {
+    public void saveOrUpdateUser(imgFile file) {
 
         mongoTemplate.save(file, "img");
     }
@@ -116,6 +123,49 @@ public class UserDaoImpl implements IUserDao {
         return mongoTemplate.findAll(control_cell.class);
     }
 
+    /**
+     * @Title: byteToFile
+     * @Description: 把二进制数据转成指定后缀名的文件，例如PDF，PNG等
+     * @param contents 二进制数据
+     * @param filePath 文件存放目录，包括文件名及其后缀，如D:\file\bike.jpg
+     * @Author: Wiener
+     * @Time: 2018-08-26 08:43:36
+     */
+    public void byteToFile(byte[] contents, String filePath) {
+        BufferedInputStream bis = null;
+        FileOutputStream fos = null;
+        BufferedOutputStream output = null;
+        try {
+            ByteArrayInputStream byteInputStream = new ByteArrayInputStream(contents);
+            bis = new BufferedInputStream(byteInputStream);
+            File file = new File(filePath);
+            // 获取文件的父路径字符串
+            File path = file.getParentFile();
+            if (!path.exists()) {
+                boolean isCreated = path.mkdirs();
+                if (!isCreated) {
+                }
+            }
+            fos = new FileOutputStream(file);
+            // 实例化OutputString 对象
+            output = new BufferedOutputStream(fos);
+            byte[] buffer = new byte[1024];
+            int length = bis.read(buffer);
+            while (length != -1) {
+                output.write(buffer, 0, length);
+                length = bis.read(buffer);
+            }
+            output.flush();
+        } catch (Exception ignored) {
+        } finally {
+            try {
+                bis.close();
+                fos.close();
+                output.close();
+            } catch (IOException ignored) {
+            }
+        }
+    }
 }
 
 

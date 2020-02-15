@@ -13,7 +13,7 @@ import java.util.Date;
  * @author chenrui@marsdl.com
  */
 @Document(collection = "img")
-public class File {
+public class imgFile {
 
 	@Id
 	private String id; // mongodb主键
@@ -80,10 +80,10 @@ public class File {
 		this.content = content;
 	}
     
-    public File() {
+    public imgFile() {
     }
     
-    public File(String name, String contentType, long size, Binary content) {
+    public imgFile(String name, String contentType, long size, Binary content) {
     	this.name = name;
     	this.contentType = contentType;
     	this.size = size;
@@ -99,7 +99,7 @@ public class File {
         if (object == null || getClass() != object.getClass()) {
             return false;
         }
-        File fileInfo = (File) object;
+		imgFile fileInfo = (imgFile) object;
         return java.util.Objects.equals(size, fileInfo.size)
                 && java.util.Objects.equals(name, fileInfo.name)
                 && java.util.Objects.equals(contentType, fileInfo.contentType)

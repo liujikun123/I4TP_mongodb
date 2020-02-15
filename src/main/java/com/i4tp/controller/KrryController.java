@@ -3,22 +3,18 @@ package com.i4tp.controller;
 
 import com.i4tp.core.GA;
 import com.i4tp.core.GAResult;
-import com.i4tp.dao.FileDao;
-import com.i4tp.dao.IUserDao;
+import com.i4tp.dao.impl.UserDaoImpl;
 import com.i4tp.entity.*;
 import io.jenetics.Chromosome;
 import io.jenetics.IntegerGene;
 import org.bson.types.Binary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,33 +29,22 @@ import java.util.List;
 public class KrryController {
 
     @Autowired
-    private IUserDao userDao;
+    private UserDaoImpl userDao;
 
     public KrryController() {
     }
     @RequestMapping(value="/upload")
-    public Object handleFileUpload(@RequestParam("file") MultipartFile file) {
-        System.out.println("************");
-        try {
-            String name = file.getOriginalFilename();
-            System.out.println(name);
-            String ContentType =  file.getContentType();
-            System.out.println(ContentType);
-            long size = file.getSize();
-            System.out.println(size);
-            Binary Content =  new Binary(file.getBytes());
-            System.out.println(Content.toString());
+    @ResponseBody
+//    @RequestParam("file")
+    public String handleFileUpload(MultipartFile file) throws IOException {
+            imgFile f = new imgFile(file.getOriginalFilename(), file.getContentType(), file.getSize(),
+                    new Binary(file.getBytes()));
+            userDao.saveOrUpdateUser(f);//二进制形式保存
+            userDao.byteToFile(file.getBytes(),
+                    "D:\\apache-tomcat-7.0.96\\webapps\\i4tp_mongodb_war\\resource\\model\\1.glb");
+            //读取二进制内容，保存为文件
 
-//            File f = new File(file.getOriginalFilename(), file.getContentType(), file.getSize(),
-//                    new Binary(file.getBytes()));
-            File f = new File(name,ContentType,size,Content);
-            System.out.println(f.toString());
-            userDao.saveOrUpdateUser(f);
-            System.out.println("666");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return "index/index";
+        return f.toString();
     }
 
 //

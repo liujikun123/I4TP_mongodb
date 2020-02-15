@@ -100,10 +100,12 @@
 
     <div id="bd" style="height:auto;width: 800px;text-align: center">
         <br>
-        <form action="${basePath}/index/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file">
-            <input type="submit" value="提交">
+        <form  enctype="multipart/form-data" id="register">
+            <input type="file" name="file" >
         </form>
+        <div style="margin-bottom:15px;">
+            <button type="button" class="btn btn-primary btn-l" onclick=upload()><span>提交</span></button>
+        </div>
 
 
 
@@ -143,9 +145,9 @@
     /* 相机 */
     function initCamera() {
 
-        camera = new THREE.PerspectiveCamera(45, 750 / 450, 0.1, 10000);
+        camera = new THREE.PerspectiveCamera(45, 750 / 450, 0.1, 100);
         // camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
-        camera.position.set(100, 100, 100);
+        camera.position.set(5, 5, 5);
         camera.lookAt(new THREE.Vector3(0, 0, -100));
 
     }
@@ -210,11 +212,12 @@
         // 加载 glTF 格式的模型
         let loader = new THREE.GLTFLoader();/*实例化加载器*/
 
-        loader.load("<%=cssPath%>/resource/model/amtc1.glb",function (obj) {
-            obj.scene.position.x = -1000;
-            obj.scene.position.y = -1000;
+        loader.load("<%=cssPath%>/resource/model/1.glb",function (obj) {
+            obj.scene.position.x = 0;
+            obj.scene.position.y = 0;
             obj.scene.position.z = 0;
             scene.add(obj.scene);
+            console.log("加载成功");
         });
 
     }
@@ -253,7 +256,7 @@
         initCamera();
         initRender();
         initLight();
-        // initFloor();
+        initFloor();
         initControls();
         initContent();
         // initGui();
@@ -289,5 +292,25 @@
     function gotoTest() {
         window.location.href = "${basePath}/index/gotoTest";
     }
+
+    function upload() {
+        var formData = new FormData($("#register")[0]);
+            $.ajax({
+                url:"${basePath}/index/upload",
+                data:formData,
+                type:'POST',
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success:function (f) {
+                    alert(f);
+                    location.reload();
+                },
+                error:function () {
+                    alert("注册失败！");
+                }
+            })
+        }
 </script>
 </html>
